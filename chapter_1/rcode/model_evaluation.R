@@ -99,8 +99,10 @@ e.mx <- ENMevaluate(occs = occs_xy_Po, envs = bgMask_Po, bg = bgSample_Po,
                       tune.args = list(fc = c("L","LQ","H"), rm = 1:4)) #will have to store maxent jar file on HPC? Maxent uses this file to run. 
 
 
-# Outputs
+# Outputs for evaluation step
 #Code that takes top  performing models based on AUC/Omission and AIC and puts stats in table
+
+# Outputs for optimal models (next step)
 #Code that takes permutation importance for each species/model set and puts that in table
 #Code that tallys the times each variable (based on permutation importance) is used for each model set
 #Code that tallys the times each variable is in top 3 for each species/model set
