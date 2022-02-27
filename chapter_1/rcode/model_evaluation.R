@@ -100,7 +100,7 @@ e.mx <- ENMevaluate(occs = occs_xy_Po, envs = bgMask_Po, bg = bgSample_Po,
 
 
 # Outputs for evaluation step
-#Code that takes top  performing models based on AUC/Omission and AIC and puts stats in table
+#Code that takes top  performing models based on AUC/Omission and AIC and puts stats in table. This is the output of e.mx@results
 
 # Outputs for optimal models (next step)
 #Code that takes permutation importance for each species/model set and puts that in table
