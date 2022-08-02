@@ -16,91 +16,145 @@ library(rgeos)
 library(ENMeval)
 library(wallace)
 
-#read in species list
-all.species <- read.csv("/Users/bethgerstner/Desktop/MSU/Zarnetske_Lab/Data/Chapter_1/test/test_species_list.csv")
+# Point Values run (CHELSA + elev)
 
-# Query GBIF database for occurrence records
-queryDb_Po <- occs_queryDb(
-  spNames = "Plecturocebus ornatus", #species name will change
+## Query selected database for occurrence records
+queryDb_Ap <- occs_queryDb(
+  spNames = "Alouatta palliata", 
   occDb = "gbif", 
-  occNum = 500,
+  occNum = 10000,
   RmUncertain = FALSE)
-occs_Po <- queryDb_Po$Plecturocebus_ornatus$cleaned
+occs_Ap <- queryDb_Ap$Alouatta_palliata$cleaned
 
+### Obtain environmental data
+
+#Using user-specified variables.
+
+# Create environmental object 
 ## Specify the directory with the environmental variables
-dir_envs_Po <- "/Users/bethgerstner/Desktop/MSU/Zarnetske_Lab/Data/Chapter_1/cropped_chelsa_sd"
-envs_path <- file.path(dir_envs_Po, c('bio1_1981.2010_V.2.1.tif', 'bio2_1981.2010_V.2.1.tif', 'bio3_1981.2010_V.2.1.tif', 'bio4_1981.2010_V.2.1.tif', 'bio5_1981.2010_V.2.1.tif', 'bio6_1981.2010_V.2.1.tif', 'bio7_1981.2010_V.2.1.tif', 'bio8_1981.2010_V.2.1.tif', 'bio9_1981.2010_V.2.1.tif', 'bio10_1981.2010_V.2.1.tif', 'bio11_1981.2010_V.2.1.tif', 'bio12_1981.2010_V.2.1.tif', 'bio13_1981.2010_V.2.1.tif', 'bio14_1981.2010_V.2.1.tif', 'bio15_1981.2010_V.2.1.tif', 'bio16_1981.2010_V.2.1.tif', 'bio17_1981.2010_V.2.1.tif', 'bio18_1981.2010_V.2.1.tif', 'bio19_1981.2010_V.2.1.tif', 'sd_11km.tif'))
-
-# Create environmental object. Change the name of objects to be generic and not species based.
-envs_Po <- envs_userEnvs(
+dir_envs_Ap <- "/Volumes/BETH'S DRIV/zarnetske_lab/CHELSA_4_only"
+envs_path <- file.path(dir_envs_Ap, c('srtm_crop.tif', 'bio6_1981.2010_V.2.1.tif', 'bio5_1981.2010_V.2.1.tif', 'bio14_1981.2010_V.2.1.tif', 'bio13_1981.2010_V.2.1.tif'))
+# Create environmental object 
+envs_Ap <- envs_userEnvs(
   rasPath = envs_path,
-  rasName = c('bio1_1981.2010_V.2.1.tif', 'bio2_1981.2010_V.2.1.tif', 'bio3_1981.2010_V.2.1.tif', 'bio4_1981.2010_V.2.1.tif', 'bio5_1981.2010_V.2.1.tif', 'bio6_1981.2010_V.2.1.tif', 'bio7_1981.2010_V.2.1.tif', 'bio8_1981.2010_V.2.1.tif', 'bio9_1981.2010_V.2.1.tif', 'bio10_1981.2010_V.2.1.tif', 'bio11_1981.2010_V.2.1.tif', 'bio12_1981.2010_V.2.1.tif', 'bio13_1981.2010_V.2.1.tif', 'bio14_1981.2010_V.2.1.tif', 'bio15_1981.2010_V.2.1.tif', 'bio16_1981.2010_V.2.1.tif', 'bio17_1981.2010_V.2.1.tif', 'bio18_1981.2010_V.2.1.tif', 'bio19_1981.2010_V.2.1.tif', 'sd_11km.tif'),
+  rasName = c('srtm_crop.tif', 'bio6_1981.2010_V.2.1.tif', 'bio5_1981.2010_V.2.1.tif', 'bio14_1981.2010_V.2.1.tif', 'bio13_1981.2010_V.2.1.tif'),
   doBrick = FALSE)
-
-#subset full GBIF dataset
-occs_xy_Po <- occs_Po[c('longitude', 'latitude')]
-occs_vals_Po <- as.data.frame(raster::extract(envs_Po, occs_xy_Po, cellnumbers = TRUE))
-
+occs_xy_Ap <- occs_Ap[c('longitude', 'latitude')]
+occs_vals_Ap <- as.data.frame(raster::extract(envs_Ap, occs_xy_Ap, cellnumbers = TRUE))
 # Remove duplicated same cell values
-occs_Po <- occs_Po[!duplicated(occs_vals_Po[, 1]), ]
-occs_vals_Po <- occs_vals_Po[!duplicated(occs_vals_Po[, 1]), -1]
-
+occs_Ap <- occs_Ap[!duplicated(occs_vals_Ap[, 1]), ]
+occs_vals_Ap <- occs_vals_Ap[!duplicated(occs_vals_Ap[, 1]), -1]
 # remove occurrence records with NA environmental values
-occs_Po <- occs_Po[!(rowSums(is.na(occs_vals_Po)) > 1), ]
-
+occs_Ap_2 <- occs_Ap[!(rowSums(is.na(occs_vals_Ap)) > 1), ] 
 # also remove variable value rows with NA environmental values
-occs_vals_Po <- na.omit(occs_vals_Po)
-
+occs_vals_Ap_2 <- na.omit(occs_vals_Ap)
 # add columns for env variable values for each occurrence record
-occs_Po <- cbind(occs_Po, occs_vals_Po)
+occs_Ap <- cbind(occs_Ap_2, occs_vals_Ap_2) 
 
-#Thinning the occurrences to 10 km
-# Thin occurrences 
-occs_Po <- poccs_thinOccs(
-  occs = occs_Po, 
-  thinDist = 10)
 
+### Process Occurrence Data
+
+#Remove occurrences outside of user drawn polygon
+occs_Ap <- poccs_selectOccs(
+  occs = occs_Ap,
+  polySelXY = matrix(c(-86.444047, -80.905157, -73.915607, -74.39916, -78.839064, -83.85044, -88.334303, -87.76283, -86.444047, 14.76522, 14.254698, 11.254812, 4.117319, -6.150488, -4.487817, 8.962027, 13.657628, 14.76522), ncol = 2, byrow = FALSE),
+  polySelID = 5373)
+
+
+### Process environmental data
+
+Sampling of 10000 background points and corresponding environmental data
+using a “point buffers” method with a 1 degree buffer.
+
+```{r}
 # Generate background extent 
-bgExt_Po <- penvs_bgExtent(
-  occs = occs_Po,
-  bgSel = "minimum convex polygon",
+bgExt_Ap <- penvs_bgExtent(
+  occs = occs_Ap,
+  bgSel = "point buffers",
   bgBuf = 1)
-
 # Mask environmental data to provided extent
-bgMask_Po <- penvs_bgMask(
-  occs = occs_Po,
-  envs = envs_Po,
-  bgExt = bgExt_Po)
-
+bgMask_Ap <- penvs_bgMask(
+  occs = occs_Ap,
+  envs = envs_Ap,
+  bgExt = bgExt_Ap)
 # Sample background points from the provided area
-bgSample_Po <- penvs_bgSample(
-  occs = occs_Po,
-  bgMask =  bgMask_Po,
+bgSample_Ap <- penvs_bgSample(
+  occs = occs_Ap,
+  bgMask =  bgMask_Ap,
   bgPtsNum = 10000)
-
 # Extract values of environmental layers for each background point
-bgEnvsVals_Po <- as.data.frame(raster::extract(bgMask_Po,  bgSample_Po))
+bgEnvsVals_Ap <- as.data.frame(raster::extract(bgMask_Ap,  bgSample_Ap))
 ##Add extracted values to background points table
-bgEnvsVals_Po <- cbind(scientific_name = paste0("bg_", "Plecturocebus ornatus"), bgSample_Po,
+bgEnvsVals_Ap <- cbind(scientific_name = paste0("bg_", "Alouatta palliata"), bgSample_Ap,
                        occID = NA, year = NA, institution_code = NA, country = NA,
                        state_province = NA, locality = NA, elevation = NA,
-                       record_type = NA, bgEnvsVals_Po)
+                       record_type = NA, bgEnvsVals_Ap)
+
+
+### Partition occurrence data
+
+#Partition occurrences and background points for model training and validation using random k-fold, a non-spatial partition method.
 
 # R code to get partitioned data
-groups_Po <- part_partitionOccs(
-  occs = occs_Po ,
-  bg =  bgSample_Po, 
-  method = "jack",
-  kfolds = nrow(occs)) #should be same as number of occurrence records after thinning, which will change for each species
+groups_Ap <- part_partitionOccs(
+  occs = occs_Ap ,
+  bg =  bgSample_Ap, 
+  method = "rand",
+  kfolds = 4) 
 
 #Need to use Maxent.jar because of the ability to see perm importance
-e.mx <- ENMevaluate(occs = occs_xy_Po, envs = bgMask_Po, bg = bgSample_Po, 
-                      algorithm = 'maxent.jar', partitions = 'jackknife',
+e.mx.3 <- ENMevaluate(occs = occs_xy_Po, envs = bgMask_Po, bg = bgSample_Ap, 
+                      algorithm = 'maxent.jar', partitions = 'randomkfold', #change this to cross validation
                       tune.args = list(fc = c("L","LQ","H"), rm = 1:4)) #will have to store maxent jar file on HPC? Maxent uses this file to run. 
 
+#save all results
+setwd("/Users/bethgerstner/Desktop/MSU/Zarnetske_Lab/Data/Chapter_1/chelse_4_only/alouatta_palliata")
+write.csv(e.mx, file="a_palliata_ENMeval_results.csv")
 
-# Outputs for evaluation step
-#Code that takes top  performing models based on AUC/Omission and AIC and puts stats in table. This is the output of e.mx@results
+
+# Extract models with lowest omission rate
+#ORs <- e.mx[which(e.mx$Mean.OR10 == min(e.mx$Mean.OR10)),]
+write.csv(ORs,file="ENMeval_OR_10.csv")
+
+# Of those with low omission, find those with the highest AUC
+#maxAUC.x10 <- ORs[which(ORs$Mean.AUC == max(ORs$Mean.AUC)),]
+#write.csv(maxAUC.x10,file="ENMeval_OR_10_max_AUC.csv")
+
+# minimize AICc
+# evaluated the AICc within 2 delta units
+minAIC <- e.mx[which(e.mx$delta.AICc <= 2),] #Make sure the column is delta.AICc
+write.csv(minAIC,file="ENMeval_min_AIC.csv")
+
+# variable importance table 
+SETTING.imp <-e.mx@variable.importance$fc.H_rm.1
+setwd("//Users/bethgerstner/Desktop/MSU/Zarnetske_Lab/Data/Chapter_1/chelse_4_only/alouatta_palliata")
+write.csv(H1.imp, "Po_permutation_imp.csv")
+
+# ---------------
+#3km run
+
+
+
+
+#----------------
+#15km run
+
+
+
+
+#----------------
+#31km run
+
+
+
+
+
+
+
+
+
+
+
 
 # Outputs for optimal models (next step)
 #Code that takes permutation importance for each species/model set and puts that in table
