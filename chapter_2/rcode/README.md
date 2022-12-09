@@ -1,3 +1,8 @@
+# Project Title
+Can scale-dependent geodiversity improve species distribution models in a montane biodiversity hotspot?
+
+# Project Summary
+Knowledge about species’ distributions is essential for conservation, especially in the light of global change. Species distribution models (SDMs) are often used to identify species’ ranges as part of designating their conservation status. Despite the utility of SDMs for conservation, many species are data deficient, especially in montane biodiversity hotspots. Further, SDMs often rely solely on environmental variable means as predictors at single resolutions, yet species are also distributed in relation to environmental heterogeneity, and these relationships are scale-dependent. To capture spatial heterogeneity in the environment, scale-dependent measures of geodiversity can be applied to environmental variables and incorporated into SDMs. These variables offer an opportunity to improve biodiversity and conservation assessments, but their utility for SDMs has not been tested. We test a range of geodiversity variables computed at varying scales of remotely sensed climate and elevation. We compare the performance of Maxent SDMs generated using CHELSA bioclim variables only, to those including geodiversity measures for data poor mammals in montane Colombia. Results suggest that certain scales of geodiversity, such as standard deviation of elevation (SDelev), can improve the ability of SDMs to explain distributions of data poor species. Permutation importance, a measure of variable contribution in Maxent, also increased with spatial resolution of SDelev, signaling that certain measures of geodiversity are more relevant at some scales than others. This study’s open workflow for identifying scales of geodiversity predictors and their SDM performance, will help practitioners make more robust models for data poor species and improve conservation assessments.
 
 ## Funding
 NASA FINESST Grant #80NSSC19K1332
@@ -15,37 +20,19 @@ All directories are named for the data level, in accordance with guidelines from
 
 The L0 subfolder contains scripts for Level-0 (raw data) analysis, mainly pulling and compiling data. This contains the following scripts: 
 
-- L0_1_IUCN_species_list_subset: IUCN species list & habitat download
 
-- L0_2_external_trait_database_merge: merge with EltonTraits and resolve taxonomic disparities
-
-- L0_3_frugivore_subset: subset database by consumption of fruit
-
-- L0_4_mammal_merge_pantheria: merge final dataset for mammals with PanTHERIA dataset
-
-- L0_5_database_final_edits: final additions to the database. Merge in range size calculations and add column for presence of taxonomic disparities
 
 - workflow_diagram: diagram demonstrating all steps of building the Frugivoria database
 
 ## L1
 The L1 subfolder contains scripts for Level-1 analysis, mainly calculating database statistics. Specifically:
-- L1_frugivoria_database_analyses_demo: statistical anaylses of database for birds and mammals
+
 
 ## L2
 The L2 subfolder contains scripts for Level-2 analysis, mainly visualization of the database. Specifically:
 
-- L2_database_stacked_barplot: stacked barplot showing contribution of external databases to Frugivoria
-
-- L2_trait_count_barplot: relative counts of newly added traits to dataset for birds and mammals
-
-- L2_downloading_gbif_records: code demonstrating how to obtain GBIF records using the database
-
-- L2_study_region_map_fig: map of study region for birds and mammals overlaid on probability of cloud forest
-
-- L2_trait_mapping: map of two traits, mass and generation time for birds and mammals
 
 
 
 
-
-*This readme last modified by BEG & PLZ Aug 2022*
+*This readme last modified by BEG & PLZ Dec 9 2022*
