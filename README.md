@@ -13,6 +13,7 @@ NASA FINESST Grant #80NSSC19K1332
 - Phoebe L. Zarnetske: PI, [MSU Spatial & Community Ecology Lab (SpaCE Lab)](http://www.communityecologylab.com)
 
 ## Publications
+TBD
 
 
 ## Code & Workflow
