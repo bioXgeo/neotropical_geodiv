@@ -22,7 +22,7 @@ The L0 subfolder contains scripts for Level-0 (raw data) analysis, mainly pullin
 
 
 
-- workflow_diagram: diagram demonstrating all steps of building the Frugivoria database
+- workflow_diagram: diagram demonstrating all steps
 
 ## L1
 The L1 subfolder contains scripts for Level-1 analysis, mainly calculating database statistics. Specifically:
