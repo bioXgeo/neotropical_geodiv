@@ -20,19 +20,22 @@ All directories are named for the data level, in accordance with guidelines from
 
 The L0 subfolder contains scripts for Level-0 (raw data) analysis, mainly pulling and compiling data. This contains the following scripts: 
 
-
-
+- L0_1_biomodelos_occ_download.R: download BioModelos based occurrence records based on previously determined species list
+- L0_2_occ_thinning_loop.R: loop uses SpThin to spatially thin downloaded occurrence records in preparation for model running (L1)
+- L0_3_generate_geodiv_variables.R: use geodiv package in R to generate geodiversity variables for use as inputs into SDMs (L1)
 - workflow_diagram: diagram demonstrating all steps
 
 ## L1
 The L1 subfolder contains scripts for Level-1 analysis, mainly calculating database statistics. Specifically:
 
+- L1_1_model_runs.R: generate SDMs for species using previously made geodiversity varaibles (L0)
+- L1_2_model_projecting.R: project SDMs for further visualization
+- L1_3_model_run_stats.R: evaluate results of SDM runs for each species
+
 
 ## L2
 The L2 subfolder contains scripts for Level-2 analysis, mainly visualization of the database. Specifically:
 
-
-
-
+TBD
 
 *This readme last modified by BEG & PLZ Dec 9 2022*
