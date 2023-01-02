@@ -1,10 +1,10 @@
-#Title: Can scale-dependent geodiversity improve species distribution models in a Neotropical biodiversity hotspot?
-
-#Project: Neotropical Geodiversity
-
-#Author: Beth E. Gerstner
-
-#Collaborators: Phoebe L. Zarnetske
+---
+title: "Can scale-dependant geodiversity improve species distribution models in a
+  Neotropical biodiversity hotspot?"
+author: "Beth Gerstner"
+date: "2023-01-02"
+output: pdf_document
+---
 
 #Overview: This script obtains the occurrence records for species of interest in Colombia. It extracts records over the BioModelos API. Records are then counted. Certain species could not be downloaded over the API and had to be obtained manually through the BioModelos website. These are then cleaned and merged into the full dataset.
 
@@ -16,7 +16,9 @@
 #Modified: 1/1/23
 
 
-#Load packages
+Load packages
+
+```{r}
 library(spocc)
 library(spThin)
 library(dismo)
@@ -29,11 +31,17 @@ library(readr)
 library(data.table)
 library(janitor)
 
-#read in species list of interest. These are species that have validated models on BioModelos. We use these occurrence records because they have been vetted by experts at BioModelos. Also, we would like to make comparisons with BioModelos models as a way of validating our method of making distribution maps.
+```
+
+Read in species list of interest. These are species that have validated models on BioModelos. We use these occurrence records because they have been vetted by experts at BioModelos. Also, we would like to make comparisons with BioModelos models as a way of validating our method of making distribution maps.
+
+```{r}
 scientific_names_mammals <- read.csv("C:/Users/bgers/Desktop/final_species_list.csv")
 bioKey <- "5NbMdjylEPEN1cBCIsX9dl:3vbVvDAXQdjf40NeYHfN1g"
+```
 
-# Download occurrence records from BioModelos
+Download occurrence records from BioModelos
+```{r}
 all.mammals.biomod <- data.frame()
 for(i in 1:nrow(scientific_names_mammals)){
   species.i <- scientific_names_mammals[i,"species"]
@@ -44,8 +52,10 @@ for(i in 1:nrow(scientific_names_mammals)){
   occs_i <- occs_i[,c("scientific_name","latitude","longitude","year","state_province","record_type", "catalog_number", "institution_code")]
   all.mammals.biomod= rbind(all.mammals.biomod, occs_i)
 }
+```
 
-#Split species list because one species Cheracebus lucifer was causing the loop to throw errors.
+Split species list because one species Cheracebus lucifer was causing the loop to throw errors.
+```{r}
 all.mammals.1 <- data.frame()
 for(i in 27:32){
   species.i <- scientfic_names_mammals[i,"species"]
@@ -56,20 +66,25 @@ for(i in 27:32){
   occs_i <- occs_i[,c("scientific_name","latitude","longitude","year","state_province","record_type", "catalog_number", "institution_code")]
   all.mammals.1= rbind(all.mammals, occs_i)
 }
+```
 
-#Join list for species downloaded over API
+Join list for species downloaded over API
+```{r}
 all.mammals.full <- rbind(all.mammals, all.mammals.1)
 setwd("C:/Users/bgers/Desktop/MSU/Zarnetske_Lab/Data/Chapter_1/candidate_species_dataset")
 
-#add the missing species somehow
+#write to csv
 write.csv(all.mammals.full,path="all_mammals_biomodelos.csv")
+```
 
-#count number of records per species
+Count number of records per species
+```{r}
 species_num <- all.mammals %>%
   count(scientific_name, sort = TRUE) 
+```
 
-
-#downloaded certain species individually on the BioModelos website because of errors and pulled them in all together
+Downloaded certain species individually on the BioModelos website because of errors and pulled them in all together
+```{r}
 single_data <- list.files(path = "C:/Users/bgers/Desktop/MSU/Zarnetske_Lab/Data/Chapter_1/candidate_species_dataset/biomodelos_singles",    
                        pattern = "*.csv", full.names = TRUE) %>% 
   lapply(read_csv) %>%                                           
@@ -82,11 +97,14 @@ single_data <- as.data.frame(single_data)
 single_data_clean <- single_data[,c("species","latitude","longitude","year", "stateProvince","basisOfRecord","catalogNumber",
                                     "institutionCode")]
 
-#read in API dataset if haven't run above
-#all.mammals <- read.csv("C:/Users/bgers/Desktop/MSU/Zarnetske_Lab/Data/Chapter_1/candidate_species_dataset/all_mammals_biomodelos_2022.csv")
+```
+
+Read in API dataset if haven't run above
+*all.mammals <- read.csv("C:/Users/bgers/Desktop/MSU/Zarnetske_Lab/Data/Chapter_1/candidate_species_dataset/all_mammals_biomodelos_2022.csv")*
 
 
-# Rename multiple columns for old to new
+Rename multiple columns for old to new and bind all data
+```{r}
 setnames(single_data_clean, old = c('species','stateProvince','basisOfRecord','catalogNumber','institutionCode'), 
          new = c('scientific_name','state_province','record_type','catalog_number','institution_code'))
 names(single_data_clean)
@@ -94,12 +112,14 @@ names(single_data_clean)
 #bind all biomodelos datasets together
 full_biomodelos_data <- rbind(all.mammals,single_data_clean)
 write.csv(full_biomodelos_data, "full_biomodelos_data.csv")
-                              
-#count records for each species
+```
+
+Count records for each species
+```{r}
 species_num_final <- full_biomodelos_data %>%
   count(scientific_name) 
 
 tabyl(full_biomodelos_data, scientific_name)
 
-
+```
 
