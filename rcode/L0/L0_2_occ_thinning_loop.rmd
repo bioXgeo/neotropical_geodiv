@@ -2,7 +2,9 @@
 title: "Using geodiversity to improve SDMs for data poor species"
 author: "Beth Gerstner"
 date: "1/2/2023"
-output: html_document
+output:
+  word_document: default
+  html_document: default
 ---
 
 Project: Using geodiversity to improve SDMs for data poor scientific_name
