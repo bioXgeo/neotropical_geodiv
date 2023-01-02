@@ -1,0 +1,80 @@
+---
+title: "Using geodiversity to improve SDMs for data poor species"
+author: "Beth Gerstner"
+date: "1/2/2023"
+output: html_document
+---
+
+Project: Using geodiversity to improve SDMs for data poor scientific_name
+
+Description: This code searches for candidate scientific_name to use by running spThin over an entire suite of scientific_name from BioModelos, saving scientific_name datasets as seperate files (full scientific_name occurrence datasets and spatially thinned datasets). Looking for both data rich and data poor primate scientific_name. There has to be enough occurrence records to be considered rich after using spThin to remove sampling bias from the datasets.
+
+Authors: Beth E. Gerstner
+
+Date: 12/29/22
+
+spThin test
+```{r, echo=FALSE, message=FALSE}
+library(spThin)
+library(stringr)
+library(dplyr)
+```
+
+Read in full occurrence dataset for Bassaricyon neblina. THis species is not part of BioModelos and instead is from the literature.
+
+
+```{r}
+occ_full <- read.csv("/mnt/ufs18/home-048/gerstn11/geodiversity/bassaricyon_neblina_occs_clean.csv")
+occ_full %>% count(scientific_name)
+```
+
+Set working directory for thinned records and run thinning function.Takes the master scientific_name list for endemic scientific_name, splits them into seperate scientific_name files and thins each scientific_name dataset. Saves as it's own file.
+
+```{r, eval=FALSE}
+setwd("/mnt/ufs18/rs-008/plz-lab/DATA/neotropical_frugivores/andes_geodiv/occurrence_records/")
+
+for(i in unique(occ_full$scientific_name)){
+  scientific_name1=occ_full[occ_full$scientific_name==i,]
+  f_name <-  str_replace(i, " ", "_")
+  write.csv(scientific_name1, paste(f_name,".csv",sep=""))
+  thinned_dataset_full <-thin( loc.data = scientific_name1, 
+                               lat.col = "latitude", long.col = "longitude", 
+                               spec.col = "scientific_name", 
+                               thin.par = 10, reps = 100, 
+                               locs.thinned.list.return = TRUE, 
+                               write.files = TRUE, 
+                               max.files = 5, 
+                               out.dir = paste(f_name,"_thinned_full/", sep=""), out.base = paste(f_name,"_thinned", sep=""), 
+                               write.log.file = TRUE,
+                               log.file = paste(f_name,"_thinned_full_log_file.txt", sep="")) 
+}
+```
+
+Perform same task as above, but run for all species.                            
+```{r}
+occ_full <- read.csv("/mnt/ufs18/home-048/gerstn11/geodiversity/records_primatespp_depured_private_rm_2022.csv")
+occ_full %>% count(species)
+
+```
+
+Takes the master scientific_name list for endemic scientific_name, splits them into seperate scientific_name files and thins each scientific_name dataset. Saves as it's own file.
+
+```{r, eval=FALSE}
+for(i in unique(occ_full$species)){
+  species1=occ_full[occ_full$species==i,]
+  f_name <-  str_replace(i, " ", "_")
+  write.csv(species1, paste(f_name,".csv",sep=""))
+  thinned_dataset_full <-thin( loc.data = species1, 
+                               lat.col = "latitude", long.col = "longitude", 
+                               spec.col = "scientific_name", 
+                               thin.par = 10, reps = 100, 
+                               locs.thinned.list.return = TRUE, 
+                               write.files = TRUE, 
+                               max.files = 5, 
+                               out.dir = paste(f_name,"_thinned_full/", sep=""), out.base = paste(f_name,"_thinned", sep=""), 
+                               write.log.file = TRUE,
+                               log.file = paste(f_name,"_thinned_full_log_file.txt", sep="")) 
+}
+```
+                               
+```

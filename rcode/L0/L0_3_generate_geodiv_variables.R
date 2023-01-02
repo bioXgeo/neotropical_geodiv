@@ -8,7 +8,6 @@
 
 
 library(geodiv)
-
 library(raster)
 library(rnaturalearth)
 library(dplyr)
