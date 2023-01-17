@@ -15,7 +15,7 @@ Authors: Beth E. Gerstner
 
 Date: 12/29/22
 
-spThin test
+load
 ```{r, echo=FALSE, message=FALSE}
 library(spThin)
 library(stringr)

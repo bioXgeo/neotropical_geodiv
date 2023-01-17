@@ -44,7 +44,7 @@ bioKey <- "5NbMdjylEPEN1cBCIsX9dl:3vbVvDAXQdjf40NeYHfN1g"
 ```
 
 Download occurrence records from BioModelos
-```{r, eval=FALSE}
+```{r}
 all.mammals.biomod <- data.frame()
 for(i in 1:nrow(scientific_names_mammals)){
   species.i <- scientific_names_mammals[i,"species"]

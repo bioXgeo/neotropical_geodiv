@@ -18,12 +18,11 @@ library(reshape2)
 
 #Species 1
 # Aotus brumbacki
-
 # Set working directory to folder where permutation importance is stored 
-setwd("/Volumes/BETH'S DRIV/zarnetske_lab/run1_results/permutation_importance")
+setwd("D:/zarnetske_lab/run1_results/permutation_importance")
 
 # Pull in files matching species name
-a_brumbacki.files <- list.files("/Volumes/BETH'S DRIV/zarnetske_lab/run1_results/permutation_importance", pattern="^a_brumbacki_permutation")
+a_brumbacki.files <- list.files("D:/zarnetske_lab/run1_results/permutation_importance", pattern="^a_brumbacki_permutation")
 
 # Combine files to be one long list 
 library(data.table)
@@ -109,7 +108,7 @@ new_var_names_ab$group <- NULL
 new_var_names_ab <- as.data.frame(new_var_names_ab)
 
 #set working directory to top performers folder
-setwd("/Volumes/BETH'S DRIV/zarnetske_lab/run1_results/top_performers")
+setwd("D:/zarnetske_lab/run1_results/top_performers")
 
 #How many times particular  variables contributed to the model (top 6) for a species
 ab_count <-new_var_names_ab %>% count(variable_used, sort=T)
@@ -148,7 +147,7 @@ new_var_names_ab$agg_column <- bing
 perm_radii.ab <- dcast(new_var_names_ab, variable_used + agg_column ~ radii, value.var="permutation.importance")
 
 #write table to file
-setwd("/Volumes/BETH'S DRIV/zarnetske_lab/run1_results/permutation_importance")
+setwd("D:/zarnetske_lab/run1_results/permutation_importance")
 write.csv(perm_radii.ab, "perm_importance_cleaned_ab.csv")
 
 
@@ -157,10 +156,10 @@ write.csv(perm_radii.ab, "perm_importance_cleaned_ab.csv")
 
 
 # Set working directory to folder where environmental data is stored 
-setwd("/Volumes/BETH'S DRIV/zarnetske_lab/run1_results/perf_stats")
+setwd("D:/zarnetske_lab/run1_results/perf_stats")
 
 #Pull in files matching species name
-a_brumbacki.files <- list.files("/Volumes/BETH'S DRIV/zarnetske_lab/run1_results/perf_stats", pattern="^a_brumbacki")
+a_brumbacki.files <- list.files("D:/zarnetske_lab/run1_results/perf_stats", pattern="^a_brumbacki")
 
 #Combine files to be one long list 
 library(data.table)
@@ -208,10 +207,10 @@ Ab_perf_stat_cbi <-
 #Bassaricyon neblina
 
 # Set working directory to folder where permutation importance is stored 
-setwd("/Volumes/BETH'S DRIV/zarnetske_lab/run1_results/permutation_importance")
+setwd("D:/zarnetske_lab/run1_results/permutation_importance")
 
 # Pull in files matching species name
-b_neblina.files <- list.files("/Volumes/BETH'S DRIV/zarnetske_lab/run1_results/permutation_importance", pattern="^b_neblina")
+b_neblina.files <- list.files("D:/zarnetske_lab/run1_results/permutation_importance", pattern="^b_neblina")
 
 # Combine files to be one long list 
 library(data.table)
@@ -297,7 +296,7 @@ new_var_names_Bn$group <- NULL
 new_var_names_Bn <- as.data.frame(new_var_names_Bn)
 
 #set working directory to top performers folder
-setwd("/Volumes/BETH'S DRIV/zarnetske_lab/run1_results/top_performers")
+setwd("D:/zarnetske_lab/run1_results/top_performers")
 
 #How many times particular  variables contributed to the model (top 6) for a species
 Bn_count <-new_var_names_Bn %>% count(variable_used, sort=T)
@@ -336,7 +335,7 @@ new_var_names_Bn$agg_column <- bing
 perm_radii.Bn <- dcast(new_var_names_Bn, variable_used + agg_column ~ radii, value.var="permutation.importance")
 
 #write table to file
-setwd("/Volumes/BETH'S DRIV/zarnetske_lab/run1_results/permutation_importance")
+setwd("D:/zarnetske_lab/run1_results/permutation_importance")
 write.csv(perm_radii.Bn, "perm_importance_cleaned_Bn.csv")
 
 
@@ -345,10 +344,10 @@ write.csv(perm_radii.Bn, "perm_importance_cleaned_Bn.csv")
 
 
 # Set working directory to folder where environmental data is stored 
-setwd("/Volumes/BETH'S DRIV/zarnetske_lab/run1_results/perf_stats")
+setwd("D:/zarnetske_lab/run1_results/perf_stats")
 
 #Pull in files matching species name
-b_neblina.files <- list.files("/Volumes/BETH'S DRIV/zarnetske_lab/run1_results/perf_stats", pattern="^b_neblina")
+b_neblina.files <- list.files("D:/zarnetske_lab/run1_results/perf_stats", pattern="^b_neblina")
 
 #Combine files to be one long list 
 library(data.table)
@@ -398,10 +397,10 @@ Bn_perf_stat_cbi <-
 #Tremarctos ornatus
 
 # Set working directory to folder where permutation importance is stored 
-setwd("/Volumes/BETH'S DRIV/zarnetske_lab/run1_results/permutation_importance")
+setwd("D:/zarnetske_lab/run1_results/permutation_importance")
 
 # Pull in files matching species name
-t_ornatus.files <- list.files("/Volumes/BETH'S DRIV/zarnetske_lab/run1_results/permutation_importance", pattern="^t_ornatus")
+t_ornatus.files <- list.files("D:/zarnetske_lab/run1_results/permutation_importance", pattern="^t_ornatus")
 
 # Combine files to be one long list 
 library(data.table)
@@ -487,7 +486,7 @@ new_var_names_To$group <- NULL
 new_var_names_To <- as.data.frame(new_var_names_To)
 
 #set working directory to top performers folder
-setwd("/Volumes/BETH'S DRIV/zarnetske_lab/run1_results/top_performers")
+setwd("D:/zarnetske_lab/run1_results/top_performers")
 
 #How many times particular  variables contributed to the model (top 6) for a species
 To_count <-new_var_names_To %>% count(variable_used, sort=T)
@@ -526,7 +525,7 @@ new_var_names_To$agg_column <- bing
 perm_radii.To <- dcast(new_var_names_To, variable_used + agg_column ~ radii, value.var="permutation.importance")
 
 #write table to file
-setwd("/Volumes/BETH'S DRIV/zarnetske_lab/run1_results/permutation_importance")
+setwd("D:/zarnetske_lab/run1_results/permutation_importance")
 write.csv(perm_radii.To, "perm_importance_cleaned_To.csv")
 
 
@@ -535,10 +534,10 @@ write.csv(perm_radii.To, "perm_importance_cleaned_To.csv")
 
 
 # Set working directory to folder where environmental data is stored 
-setwd("/Volumes/BETH'S DRIV/zarnetske_lab/run1_results/perf_stats")
+setwd("D:/zarnetske_lab/run1_results/perf_stats")
 
 #Pull in files matching species name
-t_ornatus.files <- list.files("/Volumes/BETH'S DRIV/zarnetske_lab/run1_results/perf_stats", pattern="^t_ornatus")
+t_ornatus.files <- list.files("D:/zarnetske_lab/run1_results/perf_stats", pattern="^t_ornatus")
 
 #Combine files to be one long list 
 library(data.table)
@@ -593,10 +592,10 @@ ggarrange(To_perf_stat_auc, To_perf_stat_cbi, Bn_perf_stat_auc, Bn_perf_stat_cbi
 #Plecturocebus ornatus
 
 # Set working directory to folder where permutation importance is stored 
-setwd("/Volumes/BETH'S DRIV/zarnetske_lab/run1_results/permutation_importance")
+setwd("D:/zarnetske_lab/run1_results/permutation_importance")
 
 # Pull in files matching species name
-P_ornatus.files <- list.files("/Volumes/BETH'S DRIV/zarnetske_lab/run1_results/permutation_importance", pattern="^p_ornatus")
+P_ornatus.files <- list.files("D:/zarnetske_lab/run1_results/permutation_importance", pattern="^p_ornatus")
 
 # Combine files to be one long list 
 library(data.table)
@@ -682,7 +681,7 @@ new_var_names_Po$group <- NULL
 new_var_names_Po <- as.data.frame(new_var_names_Po)
 
 #set working directory to top performers folder
-setwd("/Volumes/BETH'S DRIV/zarnetske_lab/run1_results/top_performers")
+setwd("D:/zarnetske_lab/run1_results/top_performers")
 
 #How many times particular  variables contributed to the model (top 6) for a species
 Po_count <-new_var_names_Po %>% count(variable_used, sort=T)
@@ -721,7 +720,7 @@ new_var_names_Po$agg_column <- bing
 perm_radii.Po <- dcast(new_var_names_Po, variable_used + agg_column ~ radii, value.var="permutation.importance")
 
 #write table to file
-setwd("/Volumes/BETH'S DRIV/zarnetske_lab/run1_results/permutation_importance")
+setwd("D:/zarnetske_lab/run1_results/permutation_importance")
 write.csv(perm_radii.Po, "perm_importance_cleaned_Po.csv")
 
 
@@ -730,10 +729,10 @@ write.csv(perm_radii.Po, "perm_importance_cleaned_Po.csv")
 
 
 # Set working directory to folder where environmental data is stored 
-setwd("/Volumes/BETH'S DRIV/zarnetske_lab/run1_results/perf_stats")
+setwd("D:/zarnetske_lab/run1_results/perf_stats")
 
 #Pull in files matching species name
-P_ornatus.files <- list.files("/Volumes/BETH'S DRIV/zarnetske_lab/run1_results/perf_stats", pattern="^p_ornatus")
+P_ornatus.files <- list.files("D:/zarnetske_lab/run1_results/perf_stats", pattern="^p_ornatus")
 
 #Combine files to be one long list 
 library(data.table)
@@ -783,10 +782,10 @@ Po_perf_stat_cbi <-
 #Ateles hybridus
 
 # Set working directory to folder where permutation importance is stored 
-setwd("/Volumes/BETH'S DRIV/zarnetske_lab/run1_results/permutation_importance")
+setwd("D:/zarnetske_lab/run1_results/permutation_importance")
 
 # Pull in files matching species name
-a_hybridus.files <- list.files("/Volumes/BETH'S DRIV/zarnetske_lab/run1_results/permutation_importance", pattern="^a_hybridus")
+a_hybridus.files <- list.files("D:/zarnetske_lab/run1_results/permutation_importance", pattern="^a_hybridus")
 
 # Combine files to be one long list 
 library(data.table)
@@ -872,7 +871,7 @@ new_var_names_Ah$group <- NULL
 new_var_names_Ah <- as.data.frame(new_var_names_Ah)
 
 #set working directory to top performers folder
-setwd("/Volumes/BETH'S DRIV/zarnetske_lab/run1_results/top_performers")
+setwd("D:/zarnetske_lab/run1_results/top_performers")
 
 #How many times particular  variables contributed to the model (top 6) for a species
 Ah_count <-new_var_names_Ah %>% count(variable_used, sort=T)
@@ -911,7 +910,7 @@ new_var_names_Ah$agg_column <- bing
 perm_radii.Ah <- dcast(new_var_names_Ah, variable_used + agg_column ~ radii, value.var="permutation.importance")
 
 #write table to file
-setwd("/Volumes/BETH'S DRIV/zarnetske_lab/run1_results/permutation_importance")
+setwd("D:/zarnetske_lab/run1_results/permutation_importance")
 write.csv(perm_radii.Ah, "perm_importance_cleaned_Ah.csv")
 
 
@@ -920,10 +919,10 @@ write.csv(perm_radii.Ah, "perm_importance_cleaned_Ah.csv")
 
 
 # Set working directory to folder where environmental data is stored 
-setwd("/Volumes/BETH'S DRIV/zarnetske_lab/run1_results/perf_stats")
+setwd("D:/zarnetske_lab/run1_results/perf_stats")
 
 #Pull in files matching species name
-a_hybridus.files <- list.files("/Volumes/BETH'S DRIV/zarnetske_lab/run1_results/perf_stats", pattern="^a_hybridus")
+a_hybridus.files <- list.files("D:/zarnetske_lab/run1_results/perf_stats", pattern="^a_hybridus")
 
 #Combine files to be one long list 
 library(data.table)
@@ -972,10 +971,10 @@ Ah_perf_stat_cbi <-
 #species 6
 #Aotus vociferans
 # Set working directory to folder where permutation importance is stored 
-setwd("/Volumes/BETH'S DRIV/zarnetske_lab/run1_results/permutation_importance")
+setwd("D:/zarnetske_lab/run1_results/permutation_importance")
 
 # Pull in files matching species name
-a_vociferans.files <- list.files("/Volumes/BETH'S DRIV/zarnetske_lab/run1_results/permutation_importance", pattern="^a_vociferans")
+a_vociferans.files <- list.files("D:/zarnetske_lab/run1_results/permutation_importance", pattern="^a_vociferans")
 
 # Combine files to be one long list 
 library(data.table)
@@ -1061,7 +1060,7 @@ new_var_names_Av$group <- NULL
 new_var_names_Av <- as.data.frame(new_var_names_Av)
 
 #set working directory to top performers folder
-setwd("/Volumes/BETH'S DRIV/zarnetske_lab/run1_results/top_performers")
+setwd("D:/zarnetske_lab/run1_results/top_performers")
 
 #How many times particular  variables contributed to the model (top 6) for a species
 Av_count <-new_var_names_Av %>% count(variable_used, sort=T)
@@ -1100,7 +1099,7 @@ new_var_names_Av$agg_column <- bing
 perm_radii.Av <- dcast(new_var_names_Av, variable_used + agg_column ~ radii, value.var="permutation.importance")
 
 #write table to file
-setwd("/Volumes/BETH'S DRIV/zarnetske_lab/run1_results/permutation_importance")
+setwd("D:/zarnetske_lab/run1_results/permutation_importance")
 write.csv(perm_radii.Av, "perm_importance_cleaned_Av.csv")
 
 
@@ -1109,10 +1108,10 @@ write.csv(perm_radii.Av, "perm_importance_cleaned_Av.csv")
 
 
 # Set working directory to folder where environmental data is stored 
-setwd("/Volumes/BETH'S DRIV/zarnetske_lab/run1_results/perf_stats")
+setwd("D:/zarnetske_lab/run1_results/perf_stats")
 
 #Pull in files matching species name
-a_vociferans.files <- list.files("/Volumes/BETH'S DRIV/zarnetske_lab/run1_results/perf_stats", pattern="^a_vociferans")
+a_vociferans.files <- list.files("D:/zarnetske_lab/run1_results/perf_stats", pattern="^a_vociferans")
 
 #Combine files to be one long list 
 library(data.table)
@@ -1162,10 +1161,10 @@ Av_perf_stat_cbi <-
 #Cebus capucinus
 
 # Set working directory to folder where permutation importance is stored 
-setwd("/Volumes/BETH'S DRIV/zarnetske_lab/run1_results/permutation_importance")
+setwd("D:/zarnetske_lab/run1_results/permutation_importance")
 
 # Pull in files matching species name
-c_capucinus.files <- list.files("/Volumes/BETH'S DRIV/zarnetske_lab/run1_results/permutation_importance", pattern="^c_capucinus")
+c_capucinus.files <- list.files("D:/zarnetske_lab/run1_results/permutation_importance", pattern="^c_capucinus")
 
 # Combine files to be one long list 
 library(data.table)
@@ -1251,7 +1250,7 @@ new_var_names_Cc$group <- NULL
 new_var_names_Cc <- as.data.frame(new_var_names_Cc)
 
 #set working directory to top performers folder
-setwd("/Volumes/BETH'S DRIV/zarnetske_lab/run1_results/top_performers")
+setwd("D:/zarnetske_lab/run1_results/top_performers")
 
 #How many times particular  variables contributed to the model (top 6) for a species
 Cc_count <-new_var_names_Cc %>% count(variable_used, sort=T)
@@ -1290,7 +1289,7 @@ new_var_names_Cc$agg_column <- bing
 perm_radii.Cc <- dcast(new_var_names_Cc, variable_used + agg_column ~ radii, value.var="permutation.importance")
 
 #write table to file
-setwd("/Volumes/BETH'S DRIV/zarnetske_lab/run1_results/permutation_importance")
+setwd("D:/zarnetske_lab/run1_results/permutation_importance")
 
 
 write.csv(perm_radii.Cc, "perm_importance_cleaned_Cc.csv")
@@ -1301,10 +1300,10 @@ write.csv(perm_radii.Cc, "perm_importance_cleaned_Cc.csv")
 
 
 # Set working directory to folder where environmental data is stored 
-setwd("/Volumes/BETH'S DRIV/zarnetske_lab/run1_results/perf_stats")
+setwd("D:/zarnetske_lab/run1_results/perf_stats")
 
 #Pull in files matching species name
-c_capucinus.files <- list.files("/Volumes/BETH'S DRIV/zarnetske_lab/run1_results/perf_stats", pattern="^c_capucinus")
+c_capucinus.files <- list.files("D:/zarnetske_lab/run1_results/perf_stats", pattern="^c_capucinus")
 
 #Combine files to be one long list 
 library(data.table)
@@ -1354,10 +1353,10 @@ Cc_perf_stat_cbi <-
 #Lagothrix lagthricha
 
 # Set working directory to folder where permutation importance is stored 
-setwd("/Volumes/BETH'S DRIV/zarnetske_lab/run1_results/permutation_importance")
+setwd("D:/zarnetske_lab/run1_results/permutation_importance")
 
 # Pull in files matching species name
-l_lagothricha.files <- list.files("/Volumes/BETH'S DRIV/zarnetske_lab/run1_results/permutation_importance", pattern="^l_lagothricha")
+l_lagothricha.files <- list.files("D:/zarnetske_lab/run1_results/permutation_importance", pattern="^l_lagothricha")
 
 # Combine files to be one long list 
 library(data.table)
@@ -1443,7 +1442,7 @@ new_var_names_Ll$group <- NULL
 new_var_names_Ll <- as.data.frame(new_var_names_Ll)
 
 #set working directory to top performers folder
-setwd("/Volumes/BETH'S DRIV/zarnetske_lab/run1_results/top_performers")
+setwd("D:/zarnetske_lab/run1_results/top_performers")
 
 #How many times particular  variables contributed to the model (top 6) for a species
 Ll_count <-new_var_names_Ll %>% count(variable_used, sort=T)
@@ -1483,7 +1482,7 @@ new_var_names_Ll$agg_column <- bing
 perm_radii.Ll <- dcast(new_var_names_Ll, variable_used + agg_column ~ radii, value.var="permutation.importance")
 
 #write table to file
-setwd("/Volumes/BETH'S DRIV/zarnetske_lab/run1_results/permutation_importance")
+setwd("D:/zarnetske_lab/run1_results/permutation_importance")
 write.csv(perm_radii.Ll, "perm_importance_cleaned_Ll.csv")
 
 
@@ -1492,10 +1491,10 @@ write.csv(perm_radii.Ll, "perm_importance_cleaned_Ll.csv")
 
 
 # Set working directory to folder where environmental data is stored 
-setwd("/Volumes/BETH'S DRIV/zarnetske_lab/run1_results/perf_stats")
+setwd("D:/zarnetske_lab/run1_results/perf_stats")
 
 #Pull in files matching species name
-l_lagothricha.files <- list.files("/Volumes/BETH'S DRIV/zarnetske_lab/run1_results/perf_stats", pattern="^l_lagothricha")
+l_lagothricha.files <- list.files("D:/zarnetske_lab/run1_results/perf_stats", pattern="^l_lagothricha")
 
 #Combine files to be one long list 
 library(data.table)
@@ -1545,10 +1544,10 @@ Ll_perf_stat_cbi <-
 #Alouatta palliata
 
 # Set working directory to folder where permutation importance is stored 
-setwd("/Volumes/BETH'S DRIV/zarnetske_lab/run1_results/permutation_importance")
+setwd("D:/zarnetske_lab/run1_results/permutation_importance")
 
 # Pull in files matching species name
-a_palliata.files <- list.files("/Volumes/BETH'S DRIV/zarnetske_lab/run1_results/permutation_importance", pattern="^a_palliata")
+a_palliata.files <- list.files("D:/zarnetske_lab/run1_results/permutation_importance", pattern="^a_palliata")
 
 # Combine files to be one long list 
 library(data.table)
@@ -1634,7 +1633,7 @@ new_var_names_Ap$group <- NULL
 new_var_names_Ap <- as.data.frame(new_var_names_Ap)
 
 #set working directory to top performers folder
-setwd("/Volumes/BETH'S DRIV/zarnetske_lab/run1_results/top_performers")
+setwd("D:/zarnetske_lab/run1_results/top_performers")
 
 #How many times particular  variables contributed to the model (top 6) for a species
 Ap_count <-new_var_names_Ap %>% count(variable_used, sort=T)
@@ -1673,7 +1672,7 @@ new_var_names_Ap$agg_column <- bing
 perm_radii.Ap <- dcast(new_var_names_Ap, variable_used + agg_column ~ radii, value.var="permutation.importance")
 
 #write table to file
-setwd("/Volumes/BETH'S DRIV/zarnetske_lab/run1_results/permutation_importance")
+setwd("D:/zarnetske_lab/run1_results/permutation_importance")
 write.csv(perm_radii.Ap, "perm_importance_cleaned_Ap.csv")
 
 
@@ -1682,10 +1681,10 @@ write.csv(perm_radii.Ap, "perm_importance_cleaned_Ap.csv")
 
 
 # Set working directory to folder where environmental data is stored 
-setwd("/Volumes/BETH'S DRIV/zarnetske_lab/run1_results/perf_stats")
+setwd("D:/zarnetske_lab/run1_results/perf_stats")
 
 #Pull in files matching species name
-a_palliata.files <- list.files("/Volumes/BETH'S DRIV/zarnetske_lab/run1_results/perf_stats", pattern="^a_palliata")
+a_palliata.files <- list.files("D:/zarnetske_lab/run1_results/perf_stats", pattern="^a_palliata")
 
 #Combine files to be one long list 
 library(data.table)
@@ -1735,10 +1734,10 @@ Ap_perf_stat_cbi <-
 #Alouatta seniculus
 
 # Set working directory to folder where permutation importance is stored 
-setwd("/Volumes/BETH'S DRIV/zarnetske_lab/run1_results/permutation_importance")
+setwd("D:/zarnetske_lab/run1_results/permutation_importance")
 
 # Pull in files matching species name
-a_seniculus.files <- list.files("/Volumes/BETH'S DRIV/zarnetske_lab/run1_results/permutation_importance", pattern="^a_seniculus")
+a_seniculus.files <- list.files("D:/zarnetske_lab/run1_results/permutation_importance", pattern="^a_seniculus")
 
 # Combine files to be one long list 
 library(data.table)
@@ -1824,7 +1823,7 @@ new_var_names_As$group <- NULL
 new_var_names_As <- as.data.frame(new_var_names_As)
 
 #set working directory to top performers folder
-setwd("/Volumes/BETH'S DRIV/zarnetske_lab/run1_results/top_performers")
+setwd("D:/zarnetske_lab/run1_results/top_performers")
 
 #How many times particular  variables contributed to the model (top 6) for a species
 As_count <-new_var_names_As %>% count(variable_used, sort=T)
@@ -1863,7 +1862,7 @@ new_var_names_As$agg_column <- bing
 perm_radii.As <- dcast(new_var_names_As, variable_used + agg_column ~ radii, value.var="permutation.importance")
 
 #write table to file
-setwd("/Volumes/BETH'S DRIV/zarnetske_lab/run1_results/permutation_importance")
+setwd("D:/zarnetske_lab/run1_results/permutation_importance")
 write.csv(perm_radii.As, "perm_importance_cleaned_As.csv")
 
 
@@ -1872,10 +1871,10 @@ write.csv(perm_radii.As, "perm_importance_cleaned_As.csv")
 
 
 # Set working directory to folder where environmental data is stored 
-setwd("/Volumes/BETH'S DRIV/zarnetske_lab/run1_results/perf_stats")
+setwd("D:/zarnetske_lab/run1_results/perf_stats")
 
 #Pull in files matching species name
-a_seniculus.files <- list.files("/Volumes/BETH'S DRIV/zarnetske_lab/run1_results/perf_stats", pattern="^a_seniculus")
+a_seniculus.files <- list.files("D:/zarnetske_lab/run1_results/perf_stats", pattern="^a_seniculus")
 
 #Combine files to be one long list 
 library(data.table)
@@ -1943,9 +1942,9 @@ multi_spec_perf_stat_CBI <-
 mont.spec <-rbind(b_neblina_perf_df, t_ornatus_perf_df)
 
 mont_spec_perf_stat_auc <-
-  ggplot(data=mont.spec, aes(x=radii, y=auc.train, group=scientific_name, col=scientific_name)) +
-  geom_point() +
-  geom_line() +
+  ggplot(data=mont.spec, aes(x=radii, y=auc.train, group=scientific_name, col=scientific_name)) + theme(text = element_text(size = 22), panel.background = element_blank(), axis.line = element_line(colour = "black"), plot.title = element_text(size=22)) +   
+  geom_point(cex=4) +
+  geom_line(cex=2) +
   ggtitle("Model Performance: AUC for montane species")+
   ylab("AUC") + xlab("radii (km)") + guides(col=guide_legend("species"))
 
@@ -1959,27 +1958,46 @@ low_spec_perf_stat_auc <-
   ggtitle("Model Performance: AUC for lowland species")+
   ylab("AUC") + xlab("radii (km)") + guides(col=guide_legend("species"))
 
+
+low_spec_perf_stat_auc <-
+  ggplot(data=low.spec, aes(x=radii, y=auc.train, group=scientific_name, col=scientific_name)) + theme(text = element_text(size = 22), panel.background = element_blank(), axis.line = element_line(colour = "black"), plot.title = element_text(size=22)) +   
+  geom_point(cex=4) +
+  geom_line(cex=2) +
+  ggtitle("Model Performance: AUC for lowland species")+
+  ylab("AUC") + xlab("radii (km)") + guides(col=guide_legend("species"))
+
 #Average permutation importance across species per radii (can get at the question, on average how well are these variables performing at each radii)
-b_neblina_pi_df <- read.csv("/Volumes/BETH'S DRIV/zarnetske_lab/run1_results/top_performers/b_neblina_perm_imp_all_runs.csv")
-t_ornatus_pi_df <- read.csv("/Volumes/BETH'S DRIV/zarnetske_lab/run1_results/top_performers/t_ornatus_perm_imp_all_runs.csv")
+b_neblina_pi_df <- read.csv("D:/zarnetske_lab/run1_results/top_performers/b_neblina_perm_imp_all_runs.csv")
+t_ornatus_pi_df <- read.csv("D:/zarnetske_lab/run1_results/top_performers/t_ornatus_perm_imp_all_runs.csv")
 b_neblina_pi_df$X <- NULL
 t_ornatus_pi_df$X <- NULL
 mont.spec.perm.imp <-rbind(b_neblina_pi_df, t_ornatus_pi_df)
 
+
 #plot average permutation importance at each radii for montane species
- mont_avg_radii_mult_spec <- mont.spec.perm.imp %>%group_by(variable_used) %>% 
+ mont_avg_radii_mult_spec <- mont.spec.perm.imp %>%group_by(variable_used, radii) %>% 
    summarise_at(vars("permutation.importance"), mean) %>%
    arrange(desc(permutation.importance))
 mont_avg_radii_mult_spec$radii <- as.factor(mont_avg_radii_mult_spec$radii)
+mont_avg_radii_mult_spec
 
+mont_avg_radii_mult_spec_col <-mont_avg_radii_mult_spec %>%
+  mutate(predictor type = case_when(
+    endsWith(variable_used, "sd") ~ "geodiversity variable"
+  ))
+mont_avg_radii_mult_spec_col$geodiversity_variable %>% replace_na("mean variable")
+
+test <-replace(mont_avg_radii_mult_spec_col,is.na(mont_avg_radii_mult_spec_col),c("mean variable"))
 
 montane_spec_perm_imp <-
-  ggplot(data= mont_avg_radii_mult_spec , aes(x=radii, y=permutation.importance, group=variable_used, col=variable_used)) +
-  geom_point() +
-  geom_line() +
+  ggplot(data= test , aes(x=radii, y=permutation.importance, group=variable_used, shape=variable_used)) + theme(text = element_text(size = 22), panel.background = element_blank(), axis.line = element_line(colour = "black"), plot.title = element_text(size=22)) +
+  geom_point(cex=2,aes(col=geodiversity_variable)) + 
+  scale_shape_manual(values=(15:26)) +
+  scale_color_manual(values=c('red', 'blue'))+
+  scale_size_manual(values=c(2,2))+
+  geom_line(aes(linetype=geodiversity_variable, col=geodiversity_variable), ) +
   ggtitle("Permutation Importance: montane species")+
-  ylab("PI") + xlab("radii (km)") + guides(col=guide_legend("variable category"))
-
+  ylab("PI") + xlab("radii (km)")
 
 
 
@@ -1987,15 +2005,43 @@ montane_spec_perm_imp <-
 low.spec.perm.imp <- rbind(new_var_names_As, new_var_names_Cc, new_var_names_Ll, new_var_names_Po, new_var_names_Ap, new_var_names_ab)
 
 
-lowland_avg_radii_mult_spec <- low.spec.perm.imp %>%group_by(variable_used) %>% 
+lowland_avg_radii_mult_spec <- low.spec.perm.imp %>%group_by(variable_used, radii) %>% 
   summarise_at(vars("permutation.importance"), mean) %>%
   arrange(desc(permutation.importance))
 lowland_avg_radii_mult_spec <- as.data.frame(lowland_avg_radii_mult_spec)
 lowland_avg_radii_mult_spec$radii <- as.factor(lowland_avg_radii_mult_spec$radii)
 
 
+
+lowland_avg_radii_mult_spec_col <-lowland_avg_radii_mult_spec %>%
+  mutate(geodiversity_variable = case_when(
+    endsWith(variable_used, "sd") ~ "geodiversity variable"))
+
+test <-replace(lowland_avg_radii_mult_spec_col,is.na(lowland_avg_radii_mult_spec_col),c("mean variable"))
+
 lowland_spec_perm_imp <-
-  ggplot(data= lowland_avg_radii_mult_spec , aes(x=radii, y=permutation.importance, group=variable_used, col=variable_used)) +
+  ggplot(data= test , aes(x=radii, y=permutation.importance, group=variable_used, shape=variable_used)) + theme(text = element_text(size = 22), panel.background = element_blank(), axis.line = element_line(colour = "black"), plot.title = element_text(size=22)) +
+  geom_point(cex=2,aes(col=geodiversity_variable)) + 
+  scale_shape_manual(values=(14:26)) +
+  scale_color_manual(values=c('red', 'blue'))+
+  scale_size_manual(values=c(2,2))+
+  geom_line(aes(linetype=geodiversity_variable, col=geodiversity_variable), ) +
+  ggtitle("Permutation Importance: lowland species")+
+  ylab("PI") + xlab("radii (km)")
+
+
+
+
+
+
+
+
+
+
+
+
+lowland_spec_perm_imp <-
+  ggplot(data= lowland_avg_radii_mult_spec , aes(x=radii, y=permutation.importance, group=variable_used, col=variable_used)) + 
   geom_point() +
   geom_line() +
   ggtitle("Permutation Importance: lowland species")+
