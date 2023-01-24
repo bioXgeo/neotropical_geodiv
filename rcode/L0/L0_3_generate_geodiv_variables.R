@@ -91,13 +91,13 @@ writeRaster(sd.33$sd, filename="sd_33km", format="GTiff")
 ## Cloud Cover
 
 #read in mean annual cloud cover raster
-cloud <- raster("C:/Users/bgers/Desktop/MSU/Zarnetske_Lab/Data/Cloud_forest_prediction_Jetz_2016/MODCF_meanannual.tiff")
+cloud <- raster("C:/Users/bgers/Desktop/MODCF_meanannual.tif")
 
 
 # Crop cloud raster to that of the study region
 cloud_sr <- crop(cloud, study_region_crop)
 setwd("C:/Users/bgers/Desktop")
-writeRaster(cloud_sr, filename="cloud_crop", format="GTiff")
+writeRaster(cloud_sr, filename="cloud_sq.tif", format="GTiff", overwrite=T)
 
 #set to a 3km window, which is appropriate given the home range of the species being tested (this may change in future iterations)
 window <- matrix(1, nrow = 3, ncol = 3)

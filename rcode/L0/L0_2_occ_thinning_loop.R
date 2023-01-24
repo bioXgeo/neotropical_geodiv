@@ -11,7 +11,7 @@ library(spThin)
 library(stringr)
 #RUN AGAIN
 # read full occurrence dataset for all species
-occ_full <- read.csv("/mnt/ufs18/home-048/gerstn11/geodiversity/all_mammals_biomodelos_2022.csv")
+occ_full <- read.csv("/mnt/ufs18/rs-008/plz-lab/DATA/neotropical_frugivores/andes_geodiv/records_primatespp_depured_private_rm_2022.csv")
 
 # set working directory
 setwd("/mnt/ufs18/home-048/gerstn11/geodiversity/biomodelos_thinned_records")
