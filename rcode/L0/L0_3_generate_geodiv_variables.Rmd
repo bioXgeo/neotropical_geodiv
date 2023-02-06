@@ -10,7 +10,7 @@ output:
 
 Project: Using geodiversity to improve SDMs for data poor species
 
-Description: This code calculates geodiversity metrics. It calculates sq of CHELSA biodiversity variables at multiple radii (3, 9, 15, 21, 27, 33 km). It calculcates the sq of elevation over the same radii. 
+Description: This code calculates geodiversity metrics. It calculates sq of CHELSA biodiversity variables at multiple radii (3, 9, 15, 21, 27, 33 km). It calculcates the sq of elevation and annual cloud cover over the same radii. 
 
 Authors: Beth E. Gerstner
 
