@@ -52,12 +52,6 @@ plot(study_region_crop)
 # Crop SRTM raster to that of the study region
 srtm_sr <- crop(srtm, study_region_crop)
 ```
-
-```{r}
-setwd("C:/Users/bgers/Desktop/raster_runs")
-writeRaster(srtm_sr, filename="srtm_sr.tif", format="GTiff", overwrite=TRUE)
-
-```
 setwd("D:/zarnetske_lab/CHELSA_4_only")
 writeRaster(srtm_sr, filename="srtm_crop", format="GTiff")
 
@@ -67,85 +61,67 @@ writeRaster(srtm_sr, filename="srtm_crop", format="GTiff")
 Calculate sq of SRTM at all radii mentioned above.
 ```{r, eval=FALSE}
 
-sq.i <- texture_image(srtm_sr, window_type = 'circular', 
-                                   size = 3, 
-                                   metric = 'sq', parallel = ,
-                                  ncores=10, nclumps = 100)
+setwd("/mnt/ufs18/rs-008/plz-lab/DATA/neotropical_frugivores/andes_geodiv/recalculate_env/srtm_geodiv/")
 
 
-
-
-
-
-
-
-sq.test <- texture_image(srtm_sr, window_type = 'circular', 
-                                   size = 3, 
-                                   metric = 'sq', parallel = F,
-                                 , nclumps = 100)
-
-
-
-
-vector of radii
-for i in vector 
+radii <- c(3,9,15,21,27,33)
+for (i in radii) {
 window <- matrix(1, nrow = i, ncol = i)
-sq <- focal_metrics(srtm_sr, window, metrics = list('sq'),
+sq.srtm <- focal_metrics(srtm_sr, window, metrics = list('sq'),
                     progress = TRUE)
+f.name <- paste0('srtm_sq_', i, '.tif')
+  writeRaster(sq.srtm$sq, filename=f.name, format="GTiff", overwrite=T)
+}
 
 
-
-
-
-window <- matrix(1, nrow = 3, ncol = 3)
-sq <- focal_metrics(srtm_sr, window, metrics = list('sq'),
-                    progress = TRUE)
+# window <- matrix(1, nrow = 3, ncol = 3)
+# sq.3 <- focal_metrics(srtm_sr, window, metrics = list('sq'),
+#                     progress = TRUE)
+# # 
+# #setwd("D:/zarnetske_lab/chelsa_sd/3x")
+# # writeRaster(sq$sq, filename="sd_3km", format="GTiff")
+# 
+# #set to a 9km window, which is appropriate given the home range of the species being tested (this may change in future iterations)
+# window <- matrix(1, nrow = 9, ncol = 9)
+# sq.9 <- focal_metrics(srtm_sr, window, metrics = list('sq'),
+#                     progress = TRUE)
+# 
+# #setwd("D:/zarnetske_lab/chelsa_sd/9x")
+# #writeRaster(sq.9$sq, filename="sd_9km", format="GTiff")
+# 
+# # set to a 15 km window
+#  window <- matrix(1, nrow = 15, ncol = 15)
+#  sq.15 <- focal_metrics(srtm_sr, window, metrics = list('sq'),
+#                     progress = TRUE)
+# 
+# # setwd("D:/zarnetske_lab/chelsa_sd/15x")
+# # writeRaster(sq.15$sq, filename="sd_15km", format="GTiff")
 # 
 # 
-#setwd("D:/zarnetske_lab/chelsa_sd/3x")
-# writeRaster(sq$sq, filename="sd_3km", format="GTiff")
-
-#set to a 9km window, which is appropriate given the home range of the species being tested (this may change in future iterations)
-window <- matrix(1, nrow = 9, ncol = 9)
-sq.9 <- focal_metrics(srtm_sr, window, metrics = list('sq'),
-                    progress = TRUE)
-
-#setwd("D:/zarnetske_lab/chelsa_sd/9x")
-#writeRaster(sq.9$sq, filename="sd_9km", format="GTiff")
-
-# set to a 15 km window
- window <- matrix(1, nrow = 15, ncol = 15)
- sq.15 <- focal_metrics(srtm_sr, window, metrics = list('sq'),
-                    progress = TRUE)
-
-# setwd("D:/zarnetske_lab/chelsa_sd/15x")
-# writeRaster(sq.15$sq, filename="sd_15km", format="GTiff")
-
-
-#set to a 21 km window
-window <- matrix(1, nrow = 21, ncol = 21)
-sq.21 <- focal_metrics(srtm_sr, window, metrics = list('sq'),
-                       progress = TRUE)
-
-#setwd("D:/zarnetske_lab/chelsa_sd/21x")
-#writeRaster(sq.21$sq, filename="sd_21km", format="GTiff")
-
-
-#set to a 27 km window, which is appropriate given the home range of the species being tested (this may change in future iterations)
-window <- matrix(1, nrow = 27, ncol = 27)
-sq.27 <- focal_metrics(srtm_sr, window, metrics = list('sq'),
-                       progress = TRUE)
-
-#setwd("D:/zarnetske_lab/chelsa_sd/27x")
-#writeRaster(sq.27$sq, filename="sd_27km", format="GTiff")
-
-#set to a 33 km window, which is appropriate given the home range of the species being tested (this may change in future iterations)
-window <- matrix(1, nrow = 33 , ncol = 33)
-sq.33 <- focal_metrics(srtm_sr, window, metrics = list('sq'),
-                    progress = TRUE)
-
-#setwd("D:/zarnetske_lab/chelsa_sd/33x")
-#writeRaster(sq.33$sq, filename="sd_33km", format="GTiff")
+# #set to a 21 km window
+# window <- matrix(1, nrow = 21, ncol = 21)
+# sq.21 <- focal_metrics(srtm_sr, window, metrics = list('sq'),
+#                        progress = TRUE)
+# 
+# #setwd("D:/zarnetske_lab/chelsa_sd/21x")
+# #writeRaster(sq.21$sq, filename="sd_21km", format="GTiff")
+# 
+# 
+# #set to a 27 km window, which is appropriate given the home range of the species being tested (this may change in future iterations)
+# window <- matrix(1, nrow = 27, ncol = 27)
+# sq.27 <- focal_metrics(srtm_sr, window, metrics = list('sq'),
+#                        progress = TRUE)
+# 
+# #setwd("D:/zarnetske_lab/chelsa_sd/27x")
+# #writeRaster(sq.27$sq, filename="sd_27km", format="GTiff")
+# 
+# #set to a 33 km window, which is appropriate given the home range of the species being tested (this may change in future iterations)
+# window <- matrix(1, nrow = 33 , ncol = 33)
+# sq.33 <- focal_metrics(srtm_sr, window, metrics = list('sq'),
+#                     progress = TRUE)
+# 
+# #setwd("D:/zarnetske_lab/chelsa_sd/33x")
+# #writeRaster(sq.33$sq, filename="sd_33km", format="GTiff")
 
 ```
 
@@ -167,54 +143,71 @@ cloud_sr <- crop(cloud, study_region_crop)
 Set to a 3km window same as above
 
 ```{r, eval=FALSE}
-window <- matrix(1, nrow = 3, ncol = 3)
-cloud.3 <- focal_metrics(cloud_sr, window, metrics = list('sq'),
+cloud_sr <- raster("/mnt/ufs18/rs-008/plz-lab/DATA/neotropical_frugivores/andes_geodiv/recalculate_env/base_variables/cloud_sr.tif")
+radii <- c(3,9,15,21,27,33)
+for (i in radii) {
+window <- matrix(1, nrow = i, ncol = i)
+cloud_sq <- focal_metrics(cloud_sr, window, metrics = list('sq'),
                     progress = TRUE)
- 
-setwd("D:/zarnetske_lab/chelsa_sd/3x")
-writeRaster(cloud.3$sq, filename="cloud_3km", format="GTiff")
-
-#set to a 9km window
-window <- matrix(1, nrow = 9, ncol = 9)
-cloud.9 <- focal_metrics(cloud_sr, window, metrics = list('sq'),
-                      progress = TRUE)
-
-#setwd("D:/zarnetske_lab/chelsa_sd/9x")
-#writeRaster(cloud.9$sq, filename="cloud_9km", format="GTiff")
-
-#set to a 15 km window
-window <- matrix(1, nrow = 15, ncol = 15)
-cloud.15 <- focal_metrics(cloud_sr, window, metrics = list('sq'),
-                     progress = TRUE)
- 
-#setwd("D:/zarnetske_lab/chelsa_sd/15x")
-#writeRaster(cloud.15$sq, filename="cloud_15km", format="GTiff")
+f.name <- paste0('cloud_sq_', i, '.tif')
+  writeRaster(cloud_sq$sq, filename=f.name, format="GTiff", overwrite=T)
+}
 
 
-#set to a 21 km window
-window <- matrix(1, nrow = 21, ncol = 21)
-cloud.21 <- focal_metrics(cloud_sr, window, metrics = list('sq'),
-                       progress = TRUE)
-
-#setwd("D:/zarnetske_lab/chelsa_sd/21x")
-#writeRaster(cloud.21$sq, filename="cloud_21km", format="GTiff")
-
-
-#set to a 27 km window
-window <- matrix(1, nrow = 27, ncol = 27)
-cloud.27 <- focal_metrics(cloud_sr, window, metrics = list('sq'),
-                       progress = TRUE)
-
-#setwd("D:/zarnetske_lab/chelsa_sd/27x")
-#writeRaster(cloud.27$sq, filename="cloud_27km", format="GTiff")
-
-#set to a 33 km window, which is appropriate given the home range of the species being tested (this may change in future iterations)
-window <- matrix(1, nrow = 33 , ncol = 33)
-cloud.33 <- focal_metrics(cloud_sr, window, metrics = list('sq'),
-                       progress = TRUE)
-
-#setwd("D:/zarnetske_lab/chelsa_sd/33x")
-#writeRaster(cloud.33$sq, filename="cloud_33km", format="GTiff")
+# 
+# 
+# 
+# 
+# 
+# 
+# window <- matrix(1, nrow = 3, ncol = 3)
+# cloud.3 <- focal_metrics(cloud_sr, window, metrics = list('sq'),
+#                     progress = TRUE)
+#  
+# setwd("D:/zarnetske_lab/chelsa_sd/3x")
+# writeRaster(cloud.3$sq, filename="cloud_3km", format="GTiff")
+# 
+# #set to a 9km window
+# window <- matrix(1, nrow = 9, ncol = 9)
+# cloud.9 <- focal_metrics(cloud_sr, window, metrics = list('sq'),
+#                       progress = TRUE)
+# 
+# #setwd("D:/zarnetske_lab/chelsa_sd/9x")
+# #writeRaster(cloud.9$sq, filename="cloud_9km", format="GTiff")
+# 
+# #set to a 15 km window
+# window <- matrix(1, nrow = 15, ncol = 15)
+# cloud.15 <- focal_metrics(cloud_sr, window, metrics = list('sq'),
+#                      progress = TRUE)
+#  
+# #setwd("D:/zarnetske_lab/chelsa_sd/15x")
+# #writeRaster(cloud.15$sq, filename="cloud_15km", format="GTiff")
+# 
+# 
+# #set to a 21 km window
+# window <- matrix(1, nrow = 21, ncol = 21)
+# cloud.21 <- focal_metrics(cloud_sr, window, metrics = list('sq'),
+#                        progress = TRUE)
+# 
+# #setwd("D:/zarnetske_lab/chelsa_sd/21x")
+# #writeRaster(cloud.21$sq, filename="cloud_21km", format="GTiff")
+# 
+# 
+# #set to a 27 km window
+# window <- matrix(1, nrow = 27, ncol = 27)
+# cloud.27 <- focal_metrics(cloud_sr, window, metrics = list('sq'),
+#                        progress = TRUE)
+# 
+# #setwd("D:/zarnetske_lab/chelsa_sd/27x")
+# #writeRaster(cloud.27$sq, filename="cloud_27km", format="GTiff")
+# 
+# #set to a 33 km window, which is appropriate given the home range of the species being tested (this may change in future iterations)
+# window <- matrix(1, nrow = 33 , ncol = 33)
+# cloud.33 <- focal_metrics(cloud_sr, window, metrics = list('sq'),
+#                        progress = TRUE)
+# 
+# #setwd("D:/zarnetske_lab/chelsa_sd/33x")
+# #writeRaster(cloud.33$sq, filename="cloud_33km", format="GTiff")
 
 ```
 
@@ -252,56 +245,103 @@ for (i in 1:19) {
 
 Generating the CHELSA geodiversity rasters
 ```{r, eval=FALSE}
-#Pull bio5 out of stack
-bio5 <- env.clip[[15]]
-
-# #sq of bio5 3km
-window <- matrix(1, nrow = 3 , ncol = 3)
-bio5_sd_3km <- focal_metrics(bio5, window, metrics = list('sq'),
+#Bio5
+bio5_sr <- raster("/mnt/ufs18/rs-008/plz-lab/DATA/neotropical_frugivores/andes_geodiv/recalculate_env/base_variables/bio5_1981.2010_V.2.1.tif")
+radii <- c(3,9,15,21,27,33)
+for (i in radii) {
+window <- matrix(1, nrow = i, ncol = i)
+bio5_sq <- focal_metrics(bio5_sr, window, metrics = list('sq'),
                     progress = TRUE)
+f.name <- paste0('bio5_sq_', i, '.tif')
+  writeRaster(bio5_sq$sq, filename=f.name, format="GTiff", overwrite=T)
+}
 
-# setwd("D:/zarnetske_lab/chelsa_sd/3x")
-# writeRaster(bio5_sd_3km$sq, filename="bio5_sd_3km", format="GTiff")
 
-#sq of bio5 9km
-window <- matrix(1, nrow = 9 , ncol = 9)
-bio5_sd_9km <- focal_metrics(bio5, window, metrics = list('sq'),
-                             progress = TRUE)
+#bio6
+bio6_sr <- raster("/mnt/ufs18/rs-008/plz-lab/DATA/neotropical_frugivores/andes_geodiv/recalculate_env/base_variables/bio6_1981.2010_V.2.1.tif")
+radii <- c(3,9,15,21,27,33)
+for (i in radii) {
+window <- matrix(1, nrow = i, ncol = i)
+bio6_sq <- focal_metrics(bio6_sr, window, metrics = list('sq'),
+                    progress = TRUE)
+f.name <- paste0('bio6_sq_', i, '.tif')
+  writeRaster(bio6_sq$sq, filename=f.name, format="GTiff", overwrite=T)
+}
 
-# setwd("D:/zarnetske_lab/chelsa_sd/9x")
-# writeRaster(bio5_sd_9km$sq, filename="bio5_sd_9km", format="GTiff")
+#bio13
+bio13_sr <- raster("/mnt/ufs18/rs-008/plz-lab/DATA/neotropical_frugivores/andes_geodiv/recalculate_env/base_variables/bio13_1981.2010_V.2.1.tif")
+radii <- c(3,9,15,21,27,33)
+for (i in radii) {
+window <- matrix(1, nrow = i, ncol = i)
+bio13_sq <- focal_metrics(bio13_sr, window, metrics = list('sq'),
+                    progress = TRUE)
+f.name <- paste0('bio13_sq_', i, '.tif')
+  writeRaster(bio13_sq$sq, filename=f.name, format="GTiff", overwrite=T)
+}
 
-#sq of bio5 15km
-window <- matrix(1, nrow = 15 , ncol = 15)
-bio5_sd_15km <- focal_metrics(bio5, window, metrics = list('sq'),
-                              progress = TRUE)
+#bio14
+bio14_sr <- raster("/mnt/ufs18/rs-008/plz-lab/DATA/neotropical_frugivores/andes_geodiv/recalculate_env/base_variables/bio14_1981.2010_V.2.1.tif")
+radii <- c(3,9,15,21,27,33)
+for (i in radii) {
+window <- matrix(1, nrow = i, ncol = i)
+bio14_sq <- focal_metrics(bio14_sr, window, metrics = list('sq'),
+                    progress = TRUE)
+f.name <- paste0('bio14_sq_', i, '.tif')
+  writeRaster(bio14_sq$sq, filename=f.name, format="GTiff", overwrite=T)
+}
+
+
+
+# #Pull bio5 out of stack
+# bio5 <- env.clip[[15]]
 # 
-# setwd("D:/zarnetske_lab/chelsa_sd/15x")
-# writeRaster(bio5_sd_15km$sq, filename="bio5_sd_15km", format="GTiff")
-
-#sq of bio5 21km
-window <- matrix(1, nrow = 21 , ncol = 21)
-bio5_sd_21km <- focal_metrics(bio5, window, metrics = list('sq'),
-                              progress = TRUE)
-
-#setwd("D:/zarnetske_lab/chelsa_sd/21x")
-#writeRaster(bio5_sd_21km$sq, filename="bio5_sd_21km", format="GTiff")
-
-#sq of bio5 27km
-window <- matrix(1, nrow = 27 , ncol = 27)
-bio5_sd_27km <- focal_metrics(bio5, window, metrics = list('sq'),
-                             progress = TRUE)
-
-#setwd("D:/zarnetske_lab/chelsa_sd/27x")
-#writeRaster(bio5_sd_27km$sq, filename="bio5_sd_27km", format="GTiff")
-
-#sq of bio5 33km
-window <- matrix(1, nrow = 33 , ncol = 33)
-bio5_sd_33km <- focal_metrics(bio5, window, metrics = list('sq'),
-                             progress = TRUE)
-
-#setwd("D:/zarnetske_lab/chelsa_sd/33x")
-#writeRaster(bio5_sd_33km$sq, filename="bio5_sd_33km", format="GTiff")
+# # #sq of bio5 3km
+# window <- matrix(1, nrow = 3 , ncol = 3)
+# bio5_sd_3km <- focal_metrics(bio5, window, metrics = list('sq'),
+#                     progress = TRUE)
+# 
+# # setwd("D:/zarnetske_lab/chelsa_sd/3x")
+# # writeRaster(bio5_sd_3km$sq, filename="bio5_sd_3km", format="GTiff")
+# 
+# #sq of bio5 9km
+# window <- matrix(1, nrow = 9 , ncol = 9)
+# bio5_sd_9km <- focal_metrics(bio5, window, metrics = list('sq'),
+#                              progress = TRUE)
+# 
+# # setwd("D:/zarnetske_lab/chelsa_sd/9x")
+# # writeRaster(bio5_sd_9km$sq, filename="bio5_sd_9km", format="GTiff")
+# 
+# #sq of bio5 15km
+# window <- matrix(1, nrow = 15 , ncol = 15)
+# bio5_sd_15km <- focal_metrics(bio5, window, metrics = list('sq'),
+#                               progress = TRUE)
+# # 
+# # setwd("D:/zarnetske_lab/chelsa_sd/15x")
+# # writeRaster(bio5_sd_15km$sq, filename="bio5_sd_15km", format="GTiff")
+# 
+# #sq of bio5 21km
+# window <- matrix(1, nrow = 21 , ncol = 21)
+# bio5_sd_21km <- focal_metrics(bio5, window, metrics = list('sq'),
+#                               progress = TRUE)
+# 
+# #setwd("D:/zarnetske_lab/chelsa_sd/21x")
+# #writeRaster(bio5_sd_21km$sq, filename="bio5_sd_21km", format="GTiff")
+# 
+# #sq of bio5 27km
+# window <- matrix(1, nrow = 27 , ncol = 27)
+# bio5_sd_27km <- focal_metrics(bio5, window, metrics = list('sq'),
+#                              progress = TRUE)
+# 
+# #setwd("D:/zarnetske_lab/chelsa_sd/27x")
+# #writeRaster(bio5_sd_27km$sq, filename="bio5_sd_27km", format="GTiff")
+# 
+# #sq of bio5 33km
+# window <- matrix(1, nrow = 33 , ncol = 33)
+# bio5_sd_33km <- focal_metrics(bio5, window, metrics = list('sq'),
+#                              progress = TRUE)
+# 
+# #setwd("D:/zarnetske_lab/chelsa_sd/33x")
+# #writeRaster(bio5_sd_33km$sq, filename="bio5_sd_33km", format="GTiff")
 #______
 
 #Pull bio6 out of stack
