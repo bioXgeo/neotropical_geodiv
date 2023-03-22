@@ -13,6 +13,7 @@ library(spocc)
 library(spThin)
 library(dismo)
 library(rgeos)
+
 library(ENMeval)
 library(wallace)
 
@@ -22,7 +23,7 @@ library(xlsx)
 # Point Values run (CHELSA + remote sensing)
 
 ## Query selected database for occurrence records. These have been pre-thinned by 10km.
-occs_path <- "/Volumes/BETH'S DRIV/zarnetske_lab/candidate_species_2022/thinned_data/Alouatta_palliata_thinned_full"
+occs_path <- "D:/zarnetske_lab/candidate_species_2022/thinned_data/Alouatta_palliata_thinned_full"
 occs_path <- file.path(occs_path, "Alouatta_palliata_thinned_thin1.csv")
 # get a list of species occurrence data
 userOccs_Ap <- occs_userOccs(
@@ -38,7 +39,7 @@ occs_Ap <- userOccs_Ap$Alouatta_palliata$cleaned
 #Using user-specified variables.
 # Create environmental object 
 ## Specify the directory with the environmental variables. 
-dir_envs_Ap <- "/Volumes/BETH'S DRIV/zarnetske_lab/CHELSA_4_only"
+dir_envs_Ap <- "D:/zarnetske_lab/CHELSA_4_only"
 envs_path <- file.path(dir_envs_Ap, c('srtm_crop.tif', 'bio6_1981.2010_V.2.1.tif', 'bio5_1981.2010_V.2.1.tif', 'bio14_1981.2010_V.2.1.tif', 'bio13_1981.2010_V.2.1.tif', "cloud_crop.tif"))
 # Create environmental object 
 envs_Ap <- envs_userEnvs(
@@ -104,10 +105,13 @@ occs_Ap_ll <- occs_Ap[,c("longitude","latitude")]
 #Need to use Maxent.jar because of the ability to see perm importance
 e.mx.1 <- ENMevaluate(occs = occs_Ap_ll, envs = crop_study_ap, bg = bgSample_Ap, 
                       algorithm = 'maxent.jar', partitions = 'randomkfold', #change this to cross validation
-                      tune.args = list(fc = c("LQHP"), rm = 1)) #will have to store maxent jar file on HPC? Maxent uses this file to run. 
+                      tune.args = list(fc = c("LQ"), rm = 1)) #will have to store maxent jar file on HPC? Maxent uses this file to run. 
+pdf("species_response_curve.pdf")
+dismo::response(e.mx.1@models[[1]])
+dev.off()
 
 #save all results
-setwd("/Volumes/BETH'S DRIV/zarnetske_lab/model_runs/1x/Alouatta_palliata/evaluation")
+setwd("D:/zarnetske_lab/model_runs/1x/Alouatta_palliata/evaluation")
 write.csv(e.mx.1@results, file="a_palliata_ENMeval_1x_results.1.run1.csv")
 
 
@@ -149,7 +153,7 @@ writeRaster(e.mx.1@predictions$fc.LQHP_rm.1, filename="e.mx.1.pred.run1.tif", fo
 #                       tune.args = list(fc = c("L","LQ","H","P"), rm = 1)) #will have to store maxent jar file on HPC? Maxent uses this file to run. 
 # 
 # #save all results
-# setwd("/Volumes/BETH'S DRIV/zarnetske_lab/model_runs/1x/Alouatta_palliata/evaluation")
+# setwd("D:/zarnetske_lab/model_runs/1x/Alouatta_palliata/evaluation")
 # write.csv(e.mx.2@results, file="a_palliata_ENMeval_1x_results.2.csv")
 # 
 # 
@@ -177,7 +181,7 @@ writeRaster(e.mx.1@predictions$fc.LQHP_rm.1, filename="e.mx.1.pred.run1.tif", fo
 #                       tune.args = list(fc = c("L","LQ","H","P"), rm = 1)) #will have to store maxent jar file on HPC? Maxent uses this file to run. 
 # 
 # #save all results
-# setwd("/Volumes/BETH'S DRIV/zarnetske_lab/model_runs/1x/Alouatta_palliata/evaluation")
+# setwd("D:/zarnetske_lab/model_runs/1x/Alouatta_palliata/evaluation")
 # write.csv(e.mx.3@results, file="a_palliata_ENMeval_1x_results.3.csv")
 # 
 # 
@@ -212,7 +216,7 @@ writeRaster(e.mx.1@predictions$fc.LQHP_rm.1, filename="e.mx.1.pred.run1.tif", fo
 # ---------------
 #3km run
 ## Query selected database for occurrence records. These have been pre-thinned by 10km.
-occs_path <- "/Volumes/BETH'S DRIV/zarnetske_lab/candidate_species_2022/thinned_data/Alouatta_palliata_thinned_full"
+occs_path <- "D:/zarnetske_lab/candidate_species_2022/thinned_data/Alouatta_palliata_thinned_full"
 occs_path <- file.path(occs_path, "Alouatta_palliata_thinned_thin1.csv")
 # get a list of species occurrence data
 userOccs_Ap <- occs_userOccs(
@@ -224,7 +228,7 @@ occs_Ap <- userOccs_Ap$Alouatta_palliata$cleaned
 #Using user-specified variables.
 # Create environmental object 
 ## Specify the directory with the environmental variables. 
-dir_envs_Ap <- "/Volumes/BETH'S DRIV/zarnetske_lab/chelsa_sd/3x"
+dir_envs_Ap <- "D:/zarnetske_lab/chelsa_sd/3x"
 envs_path <- file.path(dir_envs_Ap, c('sd_3km.tif', 'srtm_crop.tif', 'bio6_sd_3km.tif', 'bio5_sd_3km.tif', 'bio14_sd_3km.tif', 'bio13_sd_3km.tif', 'bio6_1981.2010_V.2.1.tif', 'bio5_1981.2010_V.2.1.tif', 'bio14_1981.2010_V.2.1.tif', 'bio13_1981.2010_V.2.1.tif','cloud_crop.tif','cloud_3km.tif'))
 # Create environmental object 
 envs_Ap <- envs_userEnvs(
@@ -291,7 +295,7 @@ e.mx.3 <- ENMevaluate(occs = occs_Ap_ll, envs = crop_study_ap, bg = bgSample_Ap,
                     tune.args = list(fc = c("LQHP"), rm = 1)) #will have to store maxent jar file on HPC? Maxent uses this file to run. 
 
 #save all results
-setwd("/Volumes/BETH'S DRIV/zarnetske_lab/model_runs/3x/Alouatta_palliata/evaluation")
+setwd("D:/zarnetske_lab/model_runs/3x/Alouatta_palliata/evaluation")
 write.csv(e.mx.3@results, file="a_palliata_ENMeval_3x_results.run1.csv")
 
 
@@ -320,7 +324,7 @@ writeRaster(e.mx.3@predictions$fc.LQHP_rm.1, filename="e.mx.3.pred.run1.tif", fo
 #9km run
 
 ## Query selected database for occurrence records. These have been pre-thinned by 10km.
-occs_path <- "/Volumes/BETH'S DRIV/zarnetske_lab/candidate_species_2022/thinned_data/Alouatta_palliata_thinned_full"
+occs_path <- "D:/zarnetske_lab/candidate_species_2022/thinned_data/Alouatta_palliata_thinned_full"
 occs_path <- file.path(occs_path, "Alouatta_palliata_thinned_thin1.csv")
 # get a list of species occurrence data
 userOccs_Ap <- occs_userOccs(
@@ -332,7 +336,7 @@ occs_Ap <- userOccs_Ap$Alouatta_palliata$cleaned
 #Using user-specified variables.
 # Create environmental object 
 ## Specify the directory with the environmental variables. 
-dir_envs_Ap <- "/Volumes/BETH'S DRIV/zarnetske_lab/chelsa_sd/9x"
+dir_envs_Ap <- "D:/zarnetske_lab/chelsa_sd/9x"
 envs_path <- file.path(dir_envs_Ap, c('sd_9km.tif', 'bio6_sd_9km.tif', 'bio5_sd_9km.tif', 'bio14_sd_9km.tif', 'bio13_sd_9km.tif','srtm_crop.tif', 'bio6_1981.2010_V.2.1.tif', 'bio5_1981.2010_V.2.1.tif', 'bio14_1981.2010_V.2.1.tif', 'bio13_1981.2010_V.2.1.tif', 'cloud_crop.tif','cloud_9km.tif'))
 # Create environmental object 
 envs_Ap <- envs_userEnvs(
@@ -409,7 +413,7 @@ e.mx.9 <- ENMevaluate(occs = occs_Ap_ll, envs = crop_study_ap, bg = bgSample_Ap,
                       tune.args = list(fc = c("LQHP"), rm = 1)) #will have to store maxent jar file on HPC? Maxent uses this file to run. 
 
 #save all results
-setwd("/Volumes/BETH'S DRIV/zarnetske_lab/model_runs/9x/Alouatta_palliata/evaluation")
+setwd("D:/zarnetske_lab/model_runs/9x/Alouatta_palliata/evaluation")
 write.csv(e.mx.9@results, file="a_palliata_ENMeval_9x_results_run1.csv")
 
 
@@ -432,7 +436,7 @@ writeRaster(e.mx.9@predictions$fc.LQHP_rm.1, filename="e.mx.9.pred.run1.tif", fo
 #----------------
 #15km run
 ## Query selected database for occurrence records. These have been pre-thinned by 10km.
-occs_path <- "/Volumes/BETH'S DRIV/zarnetske_lab/candidate_species_2022/thinned_data/Alouatta_palliata_thinned_full"
+occs_path <- "D:/zarnetske_lab/candidate_species_2022/thinned_data/Alouatta_palliata_thinned_full"
 occs_path <- file.path(occs_path, "Alouatta_palliata_thinned_thin1.csv")
 # get a list of species occurrence data
 userOccs_Ap <- occs_userOccs(
@@ -444,7 +448,7 @@ occs_Ap <- userOccs_Ap$Alouatta_palliata$cleaned
 #Using user-specified variables.
 # Create environmental object 
 ## Specify the directory with the environmental variables. 
-dir_envs_Ap <- "/Volumes/BETH'S DRIV/zarnetske_lab/chelsa_sd/15x"
+dir_envs_Ap <- "D:/zarnetske_lab/chelsa_sd/15x"
 envs_path <- file.path(dir_envs_Ap, c('sd_15km.tif', 'bio6_sd_15km.tif', 'bio5_sd_15km.tif', 'bio14_sd_15km.tif', 'bio13_sd_15km.tif','srtm_crop.tif', 'bio6_1981.2010_V.2.1.tif', 'bio5_1981.2010_V.2.1.tif', 'bio14_1981.2010_V.2.1.tif', 'bio13_1981.2010_V.2.1.tif', 'cloud_crop.tif','cloud_15km.tif'))
 # Create environmental object 
 envs_Ap <- envs_userEnvs(
@@ -522,7 +526,7 @@ e.mx.15 <- ENMevaluate(occs = occs_Ap_ll, envs = crop_study_ap, bg = bgSample_Ap
                       tune.args = list(fc = c("LQHP"), rm = 1)) #will have to store maxent jar file on HPC? Maxent uses this file to run. 
 
 #save all results
-setwd("/Volumes/BETH'S DRIV/zarnetske_lab/model_runs/15x/Alouatta_palliata/evaluation")
+setwd("D:/zarnetske_lab/model_runs/15x/Alouatta_palliata/evaluation")
 write.csv(e.mx.15@results, file="a_palliata_ENMeval_15x_results_run1.csv")
 
 
@@ -545,7 +549,7 @@ writeRaster(e.mx.15@predictions$fc.LQHP_rm.1, filename="e.mx.15.pred.run1.tif", 
 #21km run
 
 ## Query selected database for occurrence records. These have been pre-thinned by 10km.
-occs_path <- "/Volumes/BETH'S DRIV/zarnetske_lab/candidate_species_2022/thinned_data/Alouatta_palliata_thinned_full"
+occs_path <- "D:/zarnetske_lab/candidate_species_2022/thinned_data/Alouatta_palliata_thinned_full"
 occs_path <- file.path(occs_path, "Alouatta_palliata_thinned_thin1.csv")
 # get a list of species occurrence data
 userOccs_Ap <- occs_userOccs(
@@ -557,7 +561,7 @@ occs_Ap <- userOccs_Ap$Alouatta_palliata$cleaned
 #Using user-specified variables.
 # Create environmental object 
 ## Specify the directory with the environmental variables. 
-dir_envs_Ap <- "/Volumes/BETH'S DRIV/zarnetske_lab/chelsa_sd/21x"
+dir_envs_Ap <- "D:/zarnetske_lab/chelsa_sd/21x"
 envs_path <- file.path(dir_envs_Ap, c('sd_21km.tif', 'bio6_sd_21km.tif', 'bio5_sd_21km.tif', 'bio14_sd_21km.tif', 'bio13_sd_21km.tif','srtm_crop.tif', 'bio6_1981.2010_V.2.1.tif', 'bio5_1981.2010_V.2.1.tif', 'bio14_1981.2010_V.2.1.tif', 'bio13_1981.2010_V.2.1.tif', 'cloud_crop.tif','cloud_21km.tif'))
 # Create environmental object 
 envs_Ap <- envs_userEnvs(
@@ -634,7 +638,7 @@ e.mx.21 <- ENMevaluate(occs = occs_Ap_ll, envs = crop_study_ap, bg = bgSample_Ap
                        tune.args = list(fc = c("LQHP"), rm = 1)) #will have to store maxent jar file on HPC? Maxent uses this file to run. 
 
 #save all results
-setwd("/Volumes/BETH'S DRIV/zarnetske_lab/model_runs/21x/Alouatta_palliata/evaluation")
+setwd("D:/zarnetske_lab/model_runs/21x/Alouatta_palliata/evaluation")
 write.csv(e.mx.21@results, file="a_palliata_ENMeval_21x_results_run1.csv")
 
 
@@ -658,7 +662,7 @@ writeRaster(e.mx.21@predictions$fc.LQHP_rm.1, filename="e.mx.21.pred.run1.tif", 
 #27km run
 
 ## Query selected database for occurrence records. These have been pre-thinned by 10km.
-occs_path <- "/Volumes/BETH'S DRIV/zarnetske_lab/candidate_species_2022/thinned_data/Alouatta_palliata_thinned_full"
+occs_path <- "D:/zarnetske_lab/candidate_species_2022/thinned_data/Alouatta_palliata_thinned_full"
 occs_path <- file.path(occs_path, "Alouatta_palliata_thinned_thin1.csv")
 # get a list of species occurrence data
 userOccs_Ap <- occs_userOccs(
@@ -670,7 +674,7 @@ occs_Ap <- userOccs_Ap$Alouatta_palliata$cleaned
 #Using user-specified variables.
 # Create environmental object 
 ## Specify the directory with the environmental variables. 
-dir_envs_Ap <- "/Volumes/BETH'S DRIV/zarnetske_lab/chelsa_sd/27x"
+dir_envs_Ap <- "D:/zarnetske_lab/chelsa_sd/27x"
 envs_path <- file.path(dir_envs_Ap, c('sd_27km.tif', 'bio6_sd_27km.tif', 'bio5_sd_27km.tif', 'bio14_sd_27km.tif', 'bio13_sd_27km.tif','srtm_crop.tif', 'bio6_1981.2010_V.2.1.tif', 'bio5_1981.2010_V.2.1.tif', 'bio14_1981.2010_V.2.1.tif', 'bio13_1981.2010_V.2.1.tif', 'cloud_crop.tif','cloud_27km.tif'))
 # Create environmental object 
 envs_Ap <- envs_userEnvs(
@@ -747,7 +751,7 @@ e.mx.27 <- ENMevaluate(occs = occs_Ap_ll, envs = crop_study_ap, bg = bgSample_Ap
                        tune.args = list(fc = c("LQHP"), rm = 1)) #will have to store maxent jar file on HPC? Maxent uses this file to run. 
 
 #save all results
-setwd("/Volumes/BETH'S DRIV/zarnetske_lab/model_runs/27x/Alouatta_palliata/evaluation")
+setwd("D:/zarnetske_lab/model_runs/27x/Alouatta_palliata/evaluation")
 write.csv(e.mx.27@results, file="a_palliata_ENMeval_27x_results_run1.csv")
 
 
@@ -770,7 +774,7 @@ writeRaster(e.mx.27@predictions$fc.LQHP_rm.1, filename="e.mx.27.pred.run1.tif", 
 #33km run
 
 ## Query selected database for occurrence records. These have been pre-thinned by 10km.
-occs_path <- "/Volumes/BETH'S DRIV/zarnetske_lab/candidate_species_2022/thinned_data/Alouatta_palliata_thinned_full"
+occs_path <- "D:/zarnetske_lab/candidate_species_2022/thinned_data/Alouatta_palliata_thinned_full"
 occs_path <- file.path(occs_path, "Alouatta_palliata_thinned_thin1.csv")
 # get a list of species occurrence data
 userOccs_Ap <- occs_userOccs(
@@ -782,7 +786,7 @@ occs_Ap <- userOccs_Ap$Alouatta_palliata$cleaned
 #Using user-specified variables.
 # Create environmental object 
 ## Specify the directory with the environmental variables. 
-dir_envs_Ap <- "/Volumes/BETH'S DRIV/zarnetske_lab/chelsa_sd/33x"
+dir_envs_Ap <- "D:/zarnetske_lab/chelsa_sd/33x"
 envs_path <- file.path(dir_envs_Ap, c('sd_33km.tif', 'bio6_sd_33km.tif', 'bio5_sd_33km.tif', 'bio14_sd_33km.tif', 'bio13_sd_33km.tif','srtm_crop.tif', 'bio6_1981.2010_V.2.1.tif', 'bio5_1981.2010_V.2.1.tif', 'bio14_1981.2010_V.2.1.tif', 'bio13_1981.2010_V.2.1.tif', 'cloud_crop.tif','cloud_33km.tif'))
 # Create environmental object 
 envs_Ap <- envs_userEnvs(
@@ -859,7 +863,7 @@ e.mx.33 <- ENMevaluate(occs = occs_Ap_ll, envs = crop_study_ap, bg = bgSample_Ap
                        tune.args = list(fc = c("LQHP"), rm = 1)) #will have to store maxent jar file on HPC? Maxent uses this file to run. 
 
 #save all results
-setwd("/Volumes/BETH'S DRIV/zarnetske_lab/model_runs/33x/Alouatta_palliata/evaluation")
+setwd("D:/zarnetske_lab/model_runs/33x/Alouatta_palliata/evaluation")
 write.csv(e.mx.33@results, file="a_palliata_ENMeval_33x_results_run1.csv")
 
 
