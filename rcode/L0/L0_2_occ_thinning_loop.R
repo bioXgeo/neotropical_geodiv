@@ -11,19 +11,19 @@ library(spThin)
 library(stringr)
 #RUN AGAIN
 # read full occurrence dataset for all species
-occ_full <- read.csv("/mnt/ufs18/rs-008/plz-lab/DATA/neotropical_frugivores/andes_geodiv/records_primatespp_depured_private_rm_2022.csv")
+occ_full <- read.csv("C:/Users/bgers/Desktop/new_montane_species.csv")
 
 # set working directory
-setwd("/mnt/ufs18/home-048/gerstn11/geodiversity/biomodelos_thinned_records")
+setwd("C:/Users/bgers/Desktop/new_thin")
 
 # Takes the master species list for endemic species, splits them into seperate species files and thins each species dataset. Saves as it's own file.
-for(i in unique(occ_full$scientific_name)){
-  scientific_name1=occ_full[occ_full$scientific_name==i,]
+for(i in unique(occ_full$species)){
+  species1=occ_full[occ_full$species==i,]
   f_name <-  str_replace(i, " ", "_")
-  write.csv(scientific_name1, paste(f_name,".csv",sep=""))
-thinned_dataset_full <-thin( loc.data = scientific_name1, 
-        lat.col = "latitude", long.col = "longitude", 
-        spec.col = "scientific_name", 
+  write.csv(species1, paste(f_name,".csv",sep=""))
+thinned_dataset_full <-thin( loc.data = species1, 
+        lat.col = "decimalLatitude", long.col = "decimalLongitude", 
+        spec.col = "species", 
         thin.par = 10, reps = 100, 
         locs.thinned.list.return = TRUE, 
         write.files = TRUE, 

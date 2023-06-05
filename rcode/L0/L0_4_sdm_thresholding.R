@@ -1,8 +1,12 @@
 #SDM thresholding
+library(raster)
 
+test <- raster("C:/Users/bgers/Desktop/MSU/Zarnetske_Lab/Data/Chapter_2/results/Plecturocebus_ornatus_sdm_9_mean.tif")
+
+occs <- read.csv("C:/Users/bgers/Desktop/MSU/Zarnetske_Lab/Data/Chapter_2/occurrence_records/Plecturocebus_ornatus_thinned_full/Plecturocebus_ornatus_thinned_thin1.csv")
 #Function to threshold the model
 sdm_threshold <- function(sdm, occs, type = "mtp", binary = FALSE){
-  occPredVals <- raster::extract(sdm, occs)
+  occPredVals <- raster::extract(test, occs)
   if(type == "mtp"){
     thresh <- min(na.omit(occPredVals))
   } else if(type == "p10"){
@@ -22,7 +26,10 @@ sdm_threshold <- function(sdm, occs, type = "mtp", binary = FALSE){
 }
 
 # 1st run for species
-species_prediction_1_p_10 <- sdm_threshold(e.mx@predictions$fc.LQ_rm.1, occs[,2:3], type="p10")
+species_prediction_1_p_10 <- sdm_threshold(test, occs[,2:3], type="p10")
+coords <- cbind(occs$decimalLongitude, occs$decimalLatitude)
+pts.sp <- SpatialPointsDataFrame(coords, occs)
+points(pts.sp)
 
 # 2nd run for species
 species_prediction_2_p_10 <- sdm_threshold(e.mx@predictions$fc.LQ_rm.1, occs[,2:3], type="p10")

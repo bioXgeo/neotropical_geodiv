@@ -22,7 +22,7 @@ sdm_threshold <- function(sdm, occs, type = "mtp", binary = FALSE){
 }
 
 # 1st run for species
-species_prediction_1_p_10 <- sdm_threshold(e.mx@predictions$fc.LQ_rm.1, occs[,2:3], type="p10")
+species_prediction_1_p_10 <- sdm_threshold(e.mx.1@predictions$fc.LQ_rm.1, occs[,2:3], type="p10")
 
 # 2nd run for species
 species_prediction_2_p_10 <- sdm_threshold(e.mx@predictions$fc.LQ_rm.1, occs[,2:3], type="p10")
