@@ -1,3 +1,17 @@
+library(raster)
+library(dplyr)
+library(raster)
+library(maps)
+library(ggplot2)
+library(tmap)
+library(rnaturalearth)
+library(leaflet)
+library(sf)
+library(ggsn)
+library(rgeos)
+library(cowplot)
+library(BAMMtools)
+library(viridis)
 
 # Pull in world map
 worldMap <- ne_countries(scale = "medium", type = "countries", returnclass = "sf")
@@ -16,13 +30,7 @@ lagothrix_lagotricha <- read.csv("C:/Users/bgers/Desktop/MSU/Zarnetske_Lab/Data/
 full_lagotricha_occ  <-unique(lagothrix_lagotricha[c("scientific_name","latitude","longitude")])
 
 
-lagotricha_33km_all <- raster("C:/Users/bgers/Desktop/MSU/Zarnetske_Lab/Data/Chapter_2/results/sdms/geodiv_models/Lagothrix_lagotricha_SDM_33_mean_redone_p10_thresh.tif")
-
-lagotricha_33km <- mask(lagotricha_33km, colombia_shp)
-
-lagotricha_clip <- readOGR("C:/Users/bgers/Desktop/MSU/Zarnetske_Lab/Data/Chapter_2/results/sdms/worked_example/lagothrix_clipping_3.shp")
-
-lagotricha_33km <- mask(lagotricha_33km, lagotricha_clip, inverse = TRUE)
+lagotricha_33km <- raster("C:/Users/bgers/Desktop/MSU/Zarnetske_Lab/Data/Chapter_2/results/sdms/post_processed_models/geodiv_optimal_models/Lagothrix_lagotricha_geodiv_masked_cont.tif")
 
 # Need the raster to be a dataframe for mapping. Convert to points to do this.
 lagotricha_33 <- rasterToPoints(lagotricha_33km, spatial = TRUE)
@@ -31,7 +39,7 @@ lagotricha_33 <- rasterToPoints(lagotricha_33km, spatial = TRUE)
 lagotricha_33_df <- data.frame(lagotricha_33)
 
 
-test <- ggplot() + theme_bw() + geom_sf(data = study_region_crop, fill = "white") + geom_raster(data=lagotricha_33_df, aes(x=x, y=y, fill=Lagothrix_lagotricha_SDM_33_mean_redone_p10_thresh)) + scale_fill_viridis()  # labs(fill = "Suitability") #  theme(legend.background = element_rect(fill = "transparent"),legend.position = c(0.85, 0.2))
+test <- ggplot() + theme_bw() + geom_sf(data = study_region_crop, fill = "white") + geom_raster(data=lagotricha_33_df, aes(x=x, y=y, fill=Lagothrix_lagotricha_geodiv_masked_cont)) + scale_fill_viridis()  # labs(fill = "Suitability") #  theme(legend.background = element_rect(fill = "transparent"),legend.position = c(0.85, 0.2))
 
 #Add scale
 final_lagotricha_33 <-test + theme(legend.position=c("none"), panel.background = element_rect(fill = "aliceblue"))+ ylab("Latitude") + xlab("Longitude") + geom_point(data = full_lagotricha_occ, aes(x = longitude, y = latitude), color="red", size=1, alpha=1)
@@ -49,10 +57,16 @@ SA_study_region <- worldMap %>% filter(region_wb == "Latin America & Caribbean")
 
 plot(SA_study_region[1])
 
+# Create a bounding box geometry
+bbox <- st_bbox(c(xmin=-83, xmax= -60, ymin= -20, ymax=13), crs = st_crs(SA_study_region))
+
+# Crop the polygon to the bounding box
+cropped_polygon <- st_crop(SA_study_region, bbox)
+
 
 #Change to spatial dataframe
 
-SA_study_region_df <- fortify(SA_study_region)
+SA_study_region_df <- fortify(cropped_polygon)
 
 #check the way the inset looks
 test_inset <- ggplot() + geom_sf(data = SA_study_region_df) + theme_bw()
@@ -96,13 +110,8 @@ final_lagotricha_occs_inset <-ggdraw(final_lagotricha_33) +
 final_lagotricha_occs_inset
 
 
+lagotricha_1km <- raster("C:/Users/bgers/Desktop/MSU/Zarnetske_Lab/Data/Chapter_2/results/sdms/post_processed_models/no_geodiv_models/Lagothrix_lagotricha_no_geodiv_masked_cont.tif")
 
-
-
-lagotricha_1km <- raster("C:/Users/bgers/Desktop/MSU/Zarnetske_Lab/Data/Chapter_2/results/sdms/no_geodiv_models/Lagothrix_lagotricha_SDM_1_mean_redone_p10_thresh.tif")
-
-lagotricha_1km <- mask(lagotricha_1km, lagotricha_clip, inverse = TRUE)
-lagotricha_1km <- mask(lagotricha_1km, colombia_shp)
 
 # Need the raster to be a dataframe for mapping. Convert to points to do this.
 lagotricha_1 <- rasterToPoints(lagotricha_1km, spatial = TRUE)
@@ -111,7 +120,7 @@ lagotricha_1 <- rasterToPoints(lagotricha_1km, spatial = TRUE)
 lagotricha_1_df <- data.frame(lagotricha_1)
 
 
-test_2 <- ggplot() + theme_bw() + geom_sf(data = study_region_crop, fill = "white") + geom_raster(data=lagotricha_1_df, aes(x=x, y=y, fill=Lagothrix_lagotricha_SDM_1_mean_redone_P10_thresh)) +   scale_fill_viridis()
+test_2 <- ggplot() + theme_bw() + geom_sf(data = study_region_crop, fill = "white") + geom_raster(data=lagotricha_1_df, aes(x=x, y=y, fill=Lagothrix_lagotricha_no_geodiv_masked_cont)) +   scale_fill_viridis()
 
 
 #Add scale
@@ -192,7 +201,7 @@ lagotricha_expert_df <- data.frame(lagotricha_expert)
 test_3 <- ggplot() + theme_bw() + geom_sf(data = study_region_crop, fill = "white") + geom_raster(data=lagotricha_expert_df, aes(x=x, y=y, fill=Lagothrix_lagotricha_expert)) + scale_fill_gradient(low="white", high="black")
 
 #Add scale
-final_lagotricha_expert <-test_3 + theme(legend.position="none", panel.background = element_rect(fill = "aliceblue"))+ scalebar(x.min = -72, x.max = -69.5, y.min =-5, y.max = -4,dist = 100, st.dist=.1, st.size=1.9, height=.19, transform = TRUE, dist_unit = "km", model = 'WGS84') + north(study_region_crop, location="bottomright", scale=.1, symbol=1) + ylab("Latitude") + xlab("Longitude") + geom_point(data = full_lagotricha_occ, aes(x = longitude, y = latitude), color="red",size=1, alpha=.5)
+final_lagotricha_expert <-test_3 + theme(legend.position="none", panel.background = element_rect(fill = "aliceblue"))+ scalebar(x.min = -73, x.max = -68.8, y.min =-4.6, y.max = -3.8,dist = 150, st.dist=.3, st.size=2.1, height=.4, transform = TRUE, dist_unit = "km", model = 'WGS84') + north(study_region_crop, location="bottomright", scale=.1, symbol=1) + ylab("Latitude") + xlab("Longitude") + geom_point(data = full_lagotricha_occ, aes(x = longitude, y = latitude), color="red",size=1, alpha=.5)
 
 # Add inset map to bird occurrence map
 final_lagotricha_occs_inset_expert <-ggdraw(final_lagotricha_expert) +
@@ -207,12 +216,12 @@ final_lagotricha_occs_inset_expert <-ggdraw(final_lagotricha_expert) +
               panel.grid.major = element_blank())
     },
     # The distance along a (0,1) x-axis to draw the left edge of the plot
-    x = 0.19, 
+    x = 0.16, 
     # The distance along a (0,1) y-axis to draw the bottom edge of the plot
-    y = 0.70,
+    y = 0.65,
     # The width and height of the plot expressed as proportion of the entire ggdraw object
     width = 0.30, 
-    height = 0.15)
+    height = 0.13)
 
 
 library(cowplot)
@@ -220,7 +229,7 @@ library(gridExtra)
 # Create multipanel plot
 
 
-grid.arrange(final_lagotricha_occs_inset_expert,final_lagotricha_1km, final_lagotricha_33, ncol = 3)
+lagotricha <-grid.arrange(final_lagotricha_occs_inset_expert,final_lagotricha_1km, final_lagotricha_33, ncol = 3)
 
 # Add labels to the grid
 grid.text("expert", x = 0.2, y = 0.81, gp = gpar(fontsize = 12, fontface = "bold"))
@@ -228,21 +237,39 @@ grid.text("no geodiv", x = 0.53, y = 0.81, gp = gpar(fontsize = 12, fontface = "
 grid.text("33km geodiv", x = 0.86, y = 0.81, gp = gpar(fontsize = 12, fontface = "bold"))
 
 
-# Do same analysis with Lagothrix lagotricha
+# Do same analysis with Aotus griseimembra
 
-lagotricha_33km <- raster("C:/Users/bgers/Desktop/MSU/Zarnetske_Lab/Data/Chapter_2/results/sdms/geodiv_models/Lagothrix_lagotricha_SDM_33_mean_redone_p10_thresh.tif")
+# Pull in world map
+# Pull in world map
+worldMap <- ne_countries(scale = "medium", type = "countries", returnclass = "sf")
+
+# Subset world map. In this case we are removing the Galapagos by defining the bounding box around the Ecuador polygon.
+study_region <- worldMap %>% filter(sovereignt == "Ecuador" | sovereignt == "Colombia"| sovereignt == "Panama"| sovereignt == "Venezuela" | sovereignt == "Peru" | sovereignt == "Bolivia" | sovereignt == "Brazil")
+
+# Crop the study region to the bounding box of interest
+study_region_crop <-st_crop(study_region, xmin = -78, xmax = -72, ymin = 2, ymax = 13)
+plot(study_region_crop)
+
+Aotus_griseimembra <- read.csv("C:/Users/bgers/Desktop/MSU/Zarnetske_Lab/Data/Chapter_2/occurrence_records/Aotus_griseimembra_thinned_full/Aotus_griseimembra_thinned_wallace.csv")
+
+
+# Retain only unique records. This helps prevent overloading R when mapping. There's no reason to have more than one occurrence for a species at the same location unless we are mapping richness.
+full_griseimembra_occ  <-unique(Aotus_griseimembra[c("scientific_name","latitude","longitude")])
+
+
+griseimembra_33km <- raster("C:/Users/bgers/Desktop/MSU/Zarnetske_Lab/Data/Chapter_2/results/sdms/post_processed_models/geodiv_optimal_models/Aotus_griseimembra_geodiv_masked_cont.tif")
 
 # Need the raster to be a dataframe for mapping. Convert to points to do this.
-lagotricha_33 <- rasterToPoints(lagotricha_33km, spatial = TRUE)
+griseimembra_33 <- rasterToPoints(griseimembra_33km, spatial = TRUE)
 
 # Then convert to a 'conventional' dataframe
-lagotricha_33_df <- data.frame(lagotricha_33)
+griseimembra_33_df <- data.frame(griseimembra_33)
 
 
-test <- ggplot() + theme_bw() + geom_sf(data = study_region_crop, fill = "white") + geom_raster(data=lagotricha_33_df, aes(x=x, y=y, fill=Lagothrix_lagotricha_SDM_33_mean_redone_p10_thresh)) + scale_fill_gradient(low="darkblue", high="white")   # labs(fill = "Suitability") #  theme(legend.background = element_rect(fill = "transparent"),legend.position = c(0.85, 0.2))
+test <- ggplot() + theme_bw() + geom_sf(data = study_region_crop, fill = "white") + geom_raster(data=griseimembra_33_df, aes(x=x, y=y, fill=Aotus_griseimembra_geodiv_masked_cont)) + scale_fill_viridis()  # labs(fill = "Suitability") #  theme(legend.background = element_rect(fill = "transparent"),legend.position = c(0.85, 0.2))
 
 #Add scale
-final_lagotricha_33 <-test + theme(legend.position=c("none"), panel.background = element_rect(fill = "aliceblue")) + xlab("Longitude") + geom_point(data = full_lagotricha_occ, aes(x = longitude, y = latitude), color="red", size=1, alpha=.5)
+final_griseimembra_33 <-test + theme(legend.position=c("none"), panel.background = element_rect(fill = "aliceblue"))+ ylab("Latitude") + xlab("Longitude") + geom_point(data = full_griseimembra_occ, aes(x = longitude, y = latitude), color="red", size=1, alpha=1)
 
 
 #Create an inset map
@@ -253,27 +280,17 @@ final_lagotricha_33 <-test + theme(legend.position=c("none"), panel.background =
 
 #Load in Latin American study region
 SA_study_region <- worldMap %>% filter(region_wb == "Latin America & Caribbean")
-
-
-plot(SA_study_region[1])
-
-
-#Change to spatial dataframe
-
-SA_study_region_df <- fortify(SA_study_region)
-
-#check the way the inset looks
-test_inset <- ggplot() + geom_sf(data = SA_study_region_df) + theme_bw()
+study_region_inset <- worldMap %>% filter(sovereignt == "Ecuador" | sovereignt == "Colombia"| sovereignt == "Panama"| sovereignt == "Venezuela" | sovereignt == "Peru" | sovereignt == "Bolivia" | sovereignt == "Brazil")
 
 
 # Get zoom box and outline study region used for GBIF example
 inset_map_box <- 
   test_inset +
   geom_rect(aes(
-    xmin = -80, 
-    xmax = -70, 
-    ymin = 0, 
-    ymax = 13),
+    xmin = -78, 
+    xmax = -69, 
+    ymin = -5, 
+    ymax = 10),
     fill = NA, 
     colour = "red",
     size = 0.6,
@@ -282,7 +299,7 @@ inset_map_box <-
 
 
 # Add inset map to bird occurrence map
-final_lagotricha_occs_inset <-ggdraw(final_lagotricha_33) +
+final_griseimembra_occs_inset <-ggdraw(final_griseimembra_33) +
   draw_plot(
     {
       inset_map_box +
@@ -301,24 +318,24 @@ final_lagotricha_occs_inset <-ggdraw(final_lagotricha_33) +
     width = 0.40, 
     height = 0.25)
 
-final_lagotricha_occs_inset
+final_griseimembra_occs_inset
 
 
-# 1km
+griseimembra_1km <- raster("C:/Users/bgers/Desktop/MSU/Zarnetske_Lab/Data/Chapter_2/results/sdms/post_processed_models/no_geodiv_models/Aotus_griseimembra_no_geodiv_masked_cont.tif")
 
-lagotricha_1km <- raster("C:/Users/bgers/Desktop/MSU/Zarnetske_Lab/Data/Chapter_2/results/sdms/no_geodiv_models/Lagothrix_lagotricha_SDM_1_mean_redone_p10_thresh.tif")
 
 # Need the raster to be a dataframe for mapping. Convert to points to do this.
-lagotricha_1 <- rasterToPoints(lagotricha_1km, spatial = TRUE)
+griseimembra_1 <- rasterToPoints(griseimembra_1km, spatial = TRUE)
 
 # Then convert to a 'conventional' dataframe
-lagotricha_1_df <- data.frame(lagotricha_1)
+griseimembra_1_df <- data.frame(griseimembra_1)
 
 
-test_2 <- ggplot() + theme_bw() + geom_sf(data = study_region_crop, fill = "white") + geom_raster(data=lagotricha_1_df, aes(x=x, y=y, fill=Lagothrix_lagotricha_SDM_1_mean_redone_p10_thresh)) + scale_fill_gradient(low="darkblue", high="white")
+test_2 <- ggplot() + theme_bw() + geom_sf(data = study_region_crop, fill = "white") + geom_raster(data=griseimembra_1_df, aes(x=x, y=y, fill=Aotus_griseimembra_no_geodiv_masked_cont)) +   scale_fill_viridis()
+
 
 #Add scale
-final_lagotricha_1km <-test_2 + theme(legend.position="none", panel.background = element_rect(fill = "aliceblue")) +  ylab("Latitude") + xlab("Longitude") + geom_point(data = full_lagotricha_occ, aes(x = longitude, y = latitude), color="red", size=1, alpha=.5) #labs(fill = "Suitability") 
+final_griseimembra_1km <-test_2 + theme(legend.position="none", panel.background = element_rect(fill = "aliceblue")) + ylab("Latitude") + xlab("Longitude") + geom_point(data = full_griseimembra_occ, aes(x = longitude, y = latitude), color="red", size=1, alpha=1) #labs(fill = "Suitability") 
 
 
 
@@ -347,10 +364,10 @@ test_inset <- ggplot() + geom_sf(data = SA_study_region_df) + theme_bw()
 inset_map_box <- 
   test_inset +
   geom_rect(aes(
-    xmin = -80, 
-    xmax = -70, 
-    ymin = 0, 
-    ymax = 13),
+    xmin = -76, 
+    xmax = -72, 
+    ymin = 2, 
+    ymax = 12),
     fill = NA, 
     colour = "red",
     size = 0.6,
@@ -359,7 +376,7 @@ inset_map_box <-
 
 
 # Add inset map to bird occurrence map
-final_lagotricha_occs_inset_1km <-ggdraw(final_lagotricha_1km) +
+final_griseimembra_occs_inset_1km <-ggdraw(final_griseimembra_1km) +
   draw_plot(
     {
       inset_map_box +
@@ -380,22 +397,25 @@ final_lagotricha_occs_inset_1km <-ggdraw(final_lagotricha_1km) +
 
 
 #expert map
-lagotricha_expert<- raster("C:/Users/bgers/Desktop/MSU/Zarnetske_Lab/Data/Chapter_2/results/sdms/expert_maps/Lagothrix_lagotricha_expert.tif")
+griseimembra_expert<- raster("C:/Users/bgers/Desktop/MSU/Zarnetske_Lab/Data/Chapter_2/results/sdms/expert_maps/Aotus_griseimembra_expert.tif")
+
+#remove 0
+values(griseimembra_expert)[values(griseimembra_expert) == 0] = NA
 
 # Need the raster to be a dataframe for mapping. Convert to points to do this.
-lagotricha_expert <- rasterToPoints(lagotricha_expert, spatial = TRUE)
+griseimembra_expert <- rasterToPoints(griseimembra_expert, spatial = TRUE)
 
 # Then convert to a 'conventional' dataframe
-lagotricha_expert_df <- data.frame(lagotricha_expert)
+griseimembra_expert_df <- data.frame(griseimembra_expert)
 
 
-test_3 <- ggplot() + theme_bw() + geom_sf(data = study_region_crop, fill = "white") + geom_raster(data=lagotricha_expert_df, aes(x=x, y=y, fill=Lagothrix_lagotricha_expert)) + scale_fill_gradient(low="white", high="black")
+test_3 <- ggplot() + theme_bw() + geom_sf(data = study_region_crop, fill = "white") + geom_raster(data=griseimembra_expert_df, aes(x=x, y=y, fill=Aotus_griseimembra_expert)) + scale_fill_gradient(low="white", high="black")
 
 #Add scale
-final_lagotricha_expert <-test_3 + theme(legend.position="none", panel.background = element_rect(fill = "aliceblue")) + ylab("Latitude") + xlab("Longitude") +  scalebar(x.min = -76, x.max = -74, y.min =-5, y.max = -4,dist = 100, st.dist=.1, st.size=1.9, height=.19, transform = TRUE, dist_unit = "km", model = 'WGS84') + north(study_region_crop, location="bottomleft", scale=.1, symbol=1) + geom_point(data = full_lagotricha_occ, aes(x = longitude, y = latitude), color="red", size=1, alpha=.5)
+final_griseimembra_expert <-test_3 + theme(legend.position="none", panel.background = element_rect(fill = "aliceblue"))+ scalebar(x.min = -75, x.max = -73, y.min =2.3, y.max = 3,dist = 150, st.dist=.2, st.size=2.1, height=.2, transform = TRUE, dist_unit = "km", model = 'WGS84') + north(study_region_crop, location="bottomright", scale=.1, symbol=1) + ylab("Latitude") + xlab("Longitude") + geom_point(data = full_griseimembra_occ, aes(x = longitude, y = latitude), color="red",size=1, alpha=.5)
 
-# Add inset map to bird occurrence map
-final_lagotricha_occs_inset_expert <-ggdraw(final_lagotricha_expert) +
+# Add inset map 
+final_griseimembra_occs_inset_expert <-ggdraw(final_griseimembra_expert) +
   draw_plot(
     {
       inset_map_box +
@@ -407,37 +427,22 @@ final_lagotricha_occs_inset_expert <-ggdraw(final_lagotricha_expert) +
               panel.grid.major = element_blank())
     },
     # The distance along a (0,1) x-axis to draw the left edge of the plot
-    x = 0.19, 
+    x = 0.18, 
     # The distance along a (0,1) y-axis to draw the bottom edge of the plot
-    y = 0.7,
+    y = 0.66,
     # The width and height of the plot expressed as proportion of the entire ggdraw object
-    width = 0.28, 
+    width = 0.30, 
     height = 0.15)
 
-
-
+library(cowplot)
 library(gridExtra)
-grid.arrange(final_lagotricha_occs_inset_expert,final_lagotricha_1km, final_lagotricha_33, ncol = 3)
+# Create multipanel plot
+
+
+griseimembra <-grid.arrange(final_griseimembra_occs_inset_expert,final_griseimembra_1km, final_griseimembra_33, ncol = 3)
 
 # Add labels to the grid
-grid.text("Expert", x = 0.2, y = 0.88, gp = gpar(fontsize = 12, fontface = "bold"))
-grid.text("No geodiv", x = 0.53, y = 0.88, gp = gpar(fontsize = 12, fontface = "bold"))
-grid.text("Optimal geodiv (33km)", x = 0.86, y = 0.88, gp = gpar(fontsize = 12, fontface = "bold"))
+grid.text("expert", x = 0.2, y = 0.83, gp = gpar(fontsize = 12, fontface = "bold"))
+grid.text("no geodiv", x = 0.53, y = 0.83, gp = gpar(fontsize = 12, fontface = "bold"))
+grid.text("27km geodiv", x = 0.86, y = 0.83, gp = gpar(fontsize = 12, fontface = "bold"))
 
-
-cropped_lagotricha_1km <- crop(lagotricha_1km, lagotricha_expert)
-cropped_lagotricha_33km <- crop(lagotricha_33km, lagotricha_expert)
-
-
-
-cropped_lagotricha_1km <- resample(cropped_lagotricha_1km, lagotricha_expert, method = "bilinear")
-cropped_lagotricha_33km <- resample(cropped_lagotricha_33km, lagotricha_expert, method = "bilinear")
-
-# Check that all rasters have the same number of columns and rows
-compareRaster(lagotricha_expert, r2_res)
-compareRaster(lagotricha_expert, r3_res)
-
-lagotricha_stack <- stack(lagotricha_expert, cropped_lagotricha_1km, cropped_lagotricha_33km)
-
-#Schoener's D
-test <- calc.niche.overlap(lagotricha_stack, "D", quiet = T)

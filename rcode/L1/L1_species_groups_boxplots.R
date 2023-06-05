@@ -4,7 +4,7 @@
 perf_stats$species <- gsub("_", " ", perf_stats$species) # remove underscore from species names
 
 
-setwd("C:/Users/bgers/Desktop/MSU/Zarnetske_Lab/Data/Chapter_2/results/performance_plots/habitat_groups")
+setwd("C:/Users/bgers/Desktop/MSU/Zarnetske_Lab/Data/Chapter_2/results/performance_plots/habitat_groups/CBI_habitat_groups")
 # Loop over habitat area categories
 for (h in unique(spec_subset$habitat_area)) {
   cat("\nCreating plots for habitat area:", h)
@@ -46,14 +46,14 @@ ggsave(filename_CBI, plot = CBI_plot, width = 12, height = 8, dpi = 300, path = 
 spec_subset <- spec_subset %>% 
   mutate(body_mass_category = cut(body_mass_e, quantile(body_mass_e, probs = seq(0, 1, by = 0.25)), labels = c("Q1", "Q2", "Q3", "Q4")))
 
-spec_subset[22,7] <-c("Q1") #species too low
+spec_subset[19,6] <-c("Q1") #species too low
 
-setwd("C:/Users/bgers/Desktop/MSU/Zarnetske_Lab/Data/Chapter_2/results/performance_plots/mass_groups")
+setwd("C:/Users/bgers/Desktop/MSU/Zarnetske_Lab/Data/Chapter_2/results/performance_plots/mass_groups/CBI_mass")
 for (h in unique(spec_subset$body_mass_category)) {
   cat("\nCreating plots for mass:", h)
   
   # Subset the species data by habitat area
-  mass_subset <- spec_subset %>% filter(body_mass_category == "Q3")
+  mass_subset <- spec_subset %>% filter(body_mass_category == h)
 
   
   # Subset the performance data by species in this habitat area
@@ -93,7 +93,7 @@ for (h in unique(spec_subset$body_mass_category)) {
 
 #diet
 
-setwd("C:/Users/bgers/Desktop/MSU/Zarnetske_Lab/Data/Chapter_2/results/performance_plots/diet_groups")
+setwd("C:/Users/bgers/Desktop/MSU/Zarnetske_Lab/Data/Chapter_2/results/performance_plots/diet_groups/CBI_diet")
 for (h in unique(spec_subset$diet_cat_specific)) {
   cat("\nCreating plots for diet:", h)
   
@@ -144,66 +144,50 @@ for (h in unique(spec_subset$body_mass_category)) {
   # Subset the species data by habitat area
   mass_subset <- spec_subset %>% filter(body_mass_category == h)
 
-  
-  top_vars <- perm_imp %>%
-    group_by(species, radiuskm) %>%
-    do(get_top_variables(data = ., species = .$species[1], radius = .$radiuskm[1], n_top = 6)) %>%
-    ungroup()
-  
-
-top_vars$species <- gsub("_", " ", top_vars$species) # remove underscore from species names
-
-# Subset by species group'
-mass_perm_subset <-  top_vars %>% 
-  filter(species %in% mass_subset$species)
-
-variable_counts <- mass_perm_subset %>% 
-  mutate(variable = str_extract(variable, "^\\w+(?![\\d.])")) %>%
-  mutate(variable = case_when(
-    str_detect(variable, "_sq_\\d+") ~ str_replace(variable, "_sq_\\d+", "_sq"),
-    TRUE ~ variable))
-
-
-#How many times does each variable get used in each radii model? 
-#Count the number of times each variable is used across all species for each radii
-top_variable_counts <- variable_counts %>%
-  group_by(radiuskm, variable) %>%
-  summarise(n_species = n_distinct(species))
-
-
-variable_counts_sorted <- top_variable_counts %>%
-  arrange(radiuskm, desc(n_species)) %>%filter(radiuskm != 1)
-
-variable_counts$radiuskm <-as.factor(variable_counts$radiuskm)
-
-plot_title <- paste("Top Variable Count", h)
-
-# line graph
-
-# Load ggplot2 library
-library(ggplot2)
-
-# Sort variable counts by radius and count within each radius
-variable_counts <- variable_counts %>%
-  arrange(radiuskm, desc(n_species)) %>%  filter(radiuskm != 1)
-
-
-
-# View the resulting plot
-top_counts
-##heat map showing something similar
-# Create a color scale
-top_counts <- ggplot(data = variable_counts, aes(x = as.factor(radiuskm), y = variable, fill = n_species)) +
-  geom_tile() +
-  scale_fill_gradientn(colors = colorRampPalette(c("lightblue", "darkblue"))(10), na.value = "white") +
-  theme_bw() +
-  labs(x = "Radius (km)", y = "Variable", fill = "Count", title=paste("Top Variable count", h, "species"),) +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1), plot.title = element_text(hjust = 0.5))
-
-filename_count <- paste("top_variable_counts_","mass", "_", h, ".png", sep = "")
-ggsave(filename_count, plot = top_counts, width = 12, height = 8, dpi = 300, path = getwd())
-
-}
+    
+    top_vars <- perm_imp %>%
+      group_by(species, radiuskm) %>%
+      do(get_top_variables(data = ., species = .$species[1], radius = .$radiuskm[1], n_top = 6)) %>%
+      ungroup()
+    
+    
+    top_vars$species <- gsub("_", " ", top_vars$species) # remove underscore from species names
+    
+    # Subset by species group'
+    diet_perm_subset <-  top_vars %>% 
+      filter(species %in% mass_subset$species)
+    
+    #How many times does each variable get used in each radii model? 
+    #Count the number of times each variable is used across all species for each radii
+    variable_counts <- mass_perm_subset %>%
+      group_by(radiuskm, variable) %>%
+      summarise(n_species = n_distinct(species))
+    
+    # View the resulting data frame
+    variable_counts <- variable_counts %>% 
+      mutate(variable = str_extract(variable, "^\\w+(?![\\d.])")) %>%
+      mutate(variable = case_when(
+        str_detect(variable, "_sq_\\d+") ~ str_replace(variable, "_sq_\\d+", "_sq"),
+        TRUE ~ variable))
+    
+    variable_counts$radiuskm <-as.factor(variable_counts$radiuskm)
+    
+    plot_title <- paste("Top Variable Count", h)
+    
+    
+    ##heat map showing something similar
+    # Create a color scale
+    top_counts <- ggplot(data = variable_counts, aes(x = as.factor(radiuskm), y = variable, fill = n_species)) +
+      geom_tile() +
+      scale_fill_gradientn(colors = colorRampPalette(c("lightblue", "darkblue"))(10), na.value = "white") +
+      theme_bw() +
+      labs(x = "Radius (km)", y = "Variable", fill = "Count", title=paste("Top Variable count", h, "species"),) +
+      theme(axis.text.x = element_text(angle = 45, hjust = 1), plot.title = element_text(hjust = 0.5))
+    
+    filename_count <- paste("top_variable_counts_","mass", "_", h, ".png", sep = "")
+    ggsave(filename_count, plot = top_counts, width = 12, height = 8, dpi = 300, path = getwd())
+    
+  }
 
 ## Diet
 library(dplyr)

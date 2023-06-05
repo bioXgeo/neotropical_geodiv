@@ -12,7 +12,7 @@ perf_stats <- read.csv("C:/Users/bgers/Desktop/MSU/Zarnetske_Lab/Data/Chapter_2/
 
 spec_subset <- read.csv("C:/Users/bgers/Desktop/MSU/Zarnetske_Lab/Data/Chapter_2/chapter_2_trait_subset.csv")
 perf_stats$species <- gsub("_", " ", perf_stats$species) # remove underscore from species names
-
+spec_subset$species <- gsub("_", " ", spec_subset$species) # remove underscore from species names
 
 setwd("C:/Users/bgers/Desktop/MSU/Zarnetske_Lab/Data/Chapter_2/results/performance_plots")
 # Create individual plots for each trait in each habitat_area category
@@ -121,7 +121,7 @@ for (h in unique(spec_subset$habitat_area)) {
 }
 
 # cbi
-setwd("C:/Users/bgers/Desktop/MSU/Zarnetske_Lab/Data/Chapter_2/results/performance_plots/CBI_habitat_groups")
+setwd("C:/Users/bgers/Desktop/MSU/Zarnetske_Lab/Data/Chapter_2/results/performance_plots/habitat_groups/CBI_habitat_groups")
       
 # Loop over habitat area categories
 for (h in unique(spec_subset$habitat_area)) {
@@ -175,12 +175,12 @@ for (h in unique(spec_subset$habitat_area)) {
 spec_subset <- spec_subset %>% 
   mutate(body_mass_category = cut(body_mass_e, quantile(body_mass_e, probs = seq(0, 1, by = 0.25)), labels = c("Q1", "Q2", "Q3", "Q4")))
 
-spec_subset[22,6] <-c("Q1") #species too low
-spec_subset <- species_groups
+spec_subset[19,6] <-c("Q1") #species too low
 
-setwd("C:/Users/bgers/Desktop/MSU/Zarnetske_Lab/Data/Chapter_2/results/performance_plots/CBI_mass")
+
+setwd("C:/Users/bgers/Desktop/MSU/Zarnetske_Lab/Data/Chapter_2/results/performance_plots/mass_groups/CBI_mass")
 for (h in unique(spec_subset$body_mass_category)) {
-  cat("\nCreating plots for mass:", h)
+  cat("/nCreating plots for mass:", h)
   
   # Subset the species data by habitat area
   mass_subset <- spec_subset %>% filter(body_mass_category == h)
@@ -280,7 +280,7 @@ for (h in unique(spec_subset$body_mass_category)) {
 #Group by diet
 #CBI
 
-setwd("C:/Users/bgers/Desktop/MSU/Zarnetske_Lab/Data/Chapter_2/results/performance_plots/CBI_diet")
+setwd("C:/Users/bgers/Desktop/MSU/Zarnetske_Lab/Data/Chapter_2/results/performance_plots/diet_groups/CBI_diet")
 for (h in unique(spec_subset$diet_cat_specific)) {
   cat("\nCreating plots for diet:", h)
   
