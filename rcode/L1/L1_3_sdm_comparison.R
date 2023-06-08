@@ -1,13 +1,26 @@
-#SDM standardization and clipping code
-#description: This code is designed to loop through a directory containing multiple subdirectories, each representing a different species. Within each species subdirectory, the code reads in raster models for the expert, nogeo, and geo models. It then loops through each of the geo models and calculates the gain/loss in comparison to the expert and nogeo models. The code saves each gain/loss raster as a separate TIFF file with a filename that includes the species name and the index of the geo model being compared. Finally, the code closes all open raster files.
+#Title: SDM Prediction processing
+
+#Project: Assessing the impact of scale-dependent geodiversity on species distribution models in a biodiversity hotspot
+
+#Description: This code prepares all SDM predictions for future comparisons. Models (no geodiversity, geodiversity, and expert models) all need to have the same extent and projection. Each prediction was cropped to the extent of Colombia and a binary version was made. We also clip each optimal model for each species by a species-specific clipping extent generated in QGIS by references described and known barriers to species dispersal (IUCN).
+
+#Data input: SDM predictions that were outputs of modeling code; species specific clipping regions generated in QGIS.
+
+#Data output: Binary and continuous SDM predictions that have dispersal barriers removed for each species.
+
+#Author: Beth E. Gerstner
+
+#Collaborators: Mary E. Blair, Cristian A. Cruz-Rodriguez, Phoebe L. Zarnetske, Patrick Bills
 
 library(raster)
 library(ENMTools)
+library(rgdal)
+library(sf)
 
 #crop the SDMs by the expert model so they are the same extent
 
 # set working directory to folder with geodiversity and expert model rasters
-setwd("C:/Users/bgers/Desktop/MSU/Zarnetske_Lab/Data/Chapter_2/results/sdms/post_processed_models")
+setwd("INSERT FILE PATH")
 
 # get list of geodiversity rasters and expert model raster
 geo_rasters <- list.files("geodiv_optimal_models", pattern = "_mean.tif", full.names = TRUE)
@@ -17,15 +30,13 @@ no_geo_rasters <- list.files("no_geodiv_models", pattern = "_mean.tif", full.nam
 # Extract species names from file paths
 species_names <- gsub("^(.*?)_(.*?)_.*$", "\\1_\\2", basename(geo_rasters))
 
+# load shapefile of Colombia
+colombia_shp <- readOGR("INSERT FILE PATH")
+
 # Get only unique species names
 species_list <- unique(species_names)
 
-# loop through each species
-library(raster)
-library(rgdal)
-
-# load shapefile of Colombia
-colombia_shp <- readOGR("D:/Anderson_Lab_Archive/LatinAmerica/CO.shp")
+# loop through each species and check that expert and geodiversity models are the same extent. If they are not, this loop crops to make them the same extent.
 
 for (species_name in species_list) {
   # get list of geodiversity rasters and expert model raster
@@ -74,7 +85,8 @@ for (species_name in species_list) {
   }
 }
 
-  # loop through each species
+# Loop through each species and check that expert and no- geodiversity models are the same extent. If they are not, this loop crops to make them the same extent.
+
   for (species_name in species_list) {
     # load expert model raster and get extent
     # get list of geodiversity rasters and expert model raster
@@ -113,18 +125,19 @@ for (species_name in species_list) {
     }
   
 }
-  
-#Loop to crop all the optimal distribution maps and no geodiversity maps by cropping extent
+## Species-Specific clipping extents  
+#We also need to crop optimal models (those made at spatial grains leading to highest performance for each species) by species-specific clipping extents generated externally (QGIS). These clipping extents remove areas from the prediction beyond where each species can disperse so we can make direct comparisons between the expert maps and our models. 
+
+## Binary version
+#Loop to crop all the optimal distribution maps and no geodiversity maps by cropping extent 
+
 #setwd to where the clipping shapefiles are saved
+setwd("INSERT FILE PATH")
 
-setwd("C:/Users/bgers/Desktop/MSU/Zarnetske_Lab/Data/Chapter_2/results/sdms/post_processed_models")
-
+#list shapefiles
 shapefiles <-  list.files("clipping_extent", pattern = "_clipping.shp", full.names = TRUE)
 
-library(sf)
-library(raster)
-#binary geodiv
-
+# Mask binary optimal models by species specific clipping extents
 for (species_name in species_list) {
   # get list of geodiversity rasters and expert model raster
   shapefiles <- list.files("clipping_extent", pattern = "_clipping.shp", full.names = TRUE)
@@ -141,13 +154,14 @@ for (species_name in species_list) {
   masked_raster <- mask(rst, shp)
   
   # Save masked raster
-  output_dir <- ("C:/Users/bgers/Desktop/MSU/Zarnetske_Lab/Data/Chapter_2/results/sdms/post_processed_models/geodiv_optimal_models/")
+  output_dir <- ("INSERT FILE PATH")
   masked_raster_filepath <- file.path(output_dir, paste0(species_name, "_geodiv_masked.tif"))
   writeRaster(masked_raster, masked_raster_filepath, format = "GTiff", overwrite = TRUE)
 }
 
 
-#continuous
+# Continuous version
+# Loop to crop all the optimal distribution maps and no geodiversity maps by cropping extent
 
 for (species_name in species_list) {
   # get list of geodiversity rasters and expert model raster
@@ -165,14 +179,13 @@ for (species_name in species_list) {
   masked_raster <- mask(rst, shp)
   
   # Save masked raster
-  output_dir <- ("C:/Users/bgers/Desktop/MSU/Zarnetske_Lab/Data/Chapter_2/results/sdms/post_processed_models/geodiv_optimal_models/")
+  output_dir <- ("INSERT FILE PATH")
   masked_raster_filepath <- file.path(output_dir, paste0(species_name, "_geodiv_masked_cont.tif"))
   writeRaster(masked_raster, masked_raster_filepath, format = "GTiff", overwrite = TRUE)
 }
 
 #No geodiversity
-
-
+#Binary version
 for (species_name in species_list) {
   # get list of geodiversity rasters and expert model raster
   shapefiles <- list.files("clipping_extent", pattern = "_clipping.shp", full.names = TRUE)
@@ -189,14 +202,13 @@ for (species_name in species_list) {
   masked_raster <- mask(rst, shp)
   
   # Save masked raster
-  output_dir <- ("C:/Users/bgers/Desktop/MSU/Zarnetske_Lab/Data/Chapter_2/results/sdms/post_processed_models/no_geodiv_models/")
+  output_dir <- ("INSERT FILE PATH")
   masked_raster_filepath <- file.path(output_dir, paste0(species_name, "_no_geodiv_masked.tif"))
   writeRaster(masked_raster, masked_raster_filepath, format = "GTiff", overwrite = TRUE)
 }
 
 
-#continuous
-
+# Continuous version
 for (species_name in species_list) {
   # get list of geodiversity rasters and expert model raster
   shapefiles <- list.files("clipping_extent", pattern = "_clipping.shp", full.names = TRUE)
@@ -213,7 +225,7 @@ for (species_name in species_list) {
   masked_raster <- mask(rst, shp)
   
   # Save masked raster
-  output_dir <- ("C:/Users/bgers/Desktop/MSU/Zarnetske_Lab/Data/Chapter_2/results/sdms/post_processed_models/no_geodiv_models/")
+  output_dir <- ("INSERT FILE PATH")
   masked_raster_filepath <- file.path(output_dir, paste0(species_name, "_no_geodiv_masked_cont.tif"))
   writeRaster(masked_raster, masked_raster_filepath, format = "GTiff", overwrite = TRUE)
 }
