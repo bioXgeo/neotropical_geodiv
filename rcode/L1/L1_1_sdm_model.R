@@ -4,7 +4,7 @@
 
 #Description: This code calculates geodiversity metrics. It calculates SD of CHELSA biodiversity variables at multiple radii (3, 9, 15, 21, 27, 33 km). It calculcates the SD of elevation over the same radii.
 
-#Data input: Geodiversity output variables of L0_2_generate_geodiv_variables.R, and CHELSA bioclim variables, thinned occurrence records (available as supplement to manuscript; S2)
+#Data input: Geodiversity output variables of L0_2_generate_geodiv_variables.R, CHELSA bioclim variables, thinned occurrence records (available as supplement to manuscript; S2)
 
 #Data output: Binary and continuous SDM predictions for each species for different radii and for multiple runs, and an average of those.
 
