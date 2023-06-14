@@ -4,7 +4,7 @@
 
 #Description: This code generates boxplots showing model performance for different species groupings based on mass and feeding type (Wilman et al., 2014).
 
-#Data input: CSV files of model performance and species traits.
+#Data input: CSV files of model performance and species traits (available as supplement to manuscript S5)
 
 #Data output: Generates multipanel boxplots of model performance for species grouped by trait.
 
