@@ -4,7 +4,8 @@
 
 #Description: This code evaluates trends in model performance for all species distribution models. Further, it evaluates trends in variable important (permutation importance)
 
-#Data input: CSV files of model performance (CBI/AUC) and permutation importance (variable importance) that were outputs of the model running code.
+#Data input: CSV files of model performance (CBI/AUC) and permutation importance (variable importance) that were outputs of the model running code. Available as supplement to 
+# manuscript (S3 & S4).
 
 #Data output: Plots of model performance per species, averages of model performance across all species, violin plot of permutation importance across all species.
 
