@@ -2,7 +2,7 @@
 
 #Project: Assessing the impact of scale-dependent geodiversity on species distribution models in a biodiversity hotspot
 
-#Description: This code evaluates the percent increase in performance between non-geodiversity models and geodiversity models. It also performs Mann-Witney tests on averaged model performance across each spatial grain.
+#Description: This code evaluates the percent increase in performance between non-geodiversity models and geodiversity models. It also performs Mann-Witney tests on averaged model performance across each spatial grain. The basis for Table 3.
 
 #Data input: Model performance values csv file (Supplemental S4; stats_mean.csv) and 
 
