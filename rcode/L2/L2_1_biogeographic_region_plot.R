@@ -8,12 +8,12 @@ study_region <- worldMap %>% filter(sovereignt == "Colombia")
 
 
 # Load the study region shapefiles
-study_region_1 <- st_read("C:/Users/bgers/Desktop/MSU/Zarnetske_Lab/Data/Chapter_2/results/biogeographic_regions/Choco-Darien.shp")
-study_region_2 <- st_read("C:/Users/bgers/Desktop/MSU/Zarnetske_Lab/Data/Chapter_2/results/biogeographic_regions/Guajira.shp")
-study_region_3 <- st_read("C:/Users/bgers/Desktop/MSU/Zarnetske_Lab/Data/Chapter_2/results/biogeographic_regions/Imeri.shp")
-study_region_4 <- st_read("C:/Users/bgers/Desktop/MSU/Zarnetske_Lab/Data/Chapter_2/results/biogeographic_regions/Magdalena.shp")
-study_region_5 <- st_read("C:/Users/bgers/Desktop/MSU/Zarnetske_Lab/Data/Chapter_2/results/biogeographic_regions/Paramo.shp")
-study_region_6 <- st_read("C:/Users/bgers/Desktop/MSU/Zarnetske_Lab/Data/Chapter_2/results/biogeographic_regions/Sabana.shp")
+study_region_1 <- st_read("C:/Users/bgers/Desktop/MSU/Zarnetske_Lab/Data/Chapter_2/results/biogeographic_regions/Choco-Darien1.shp")
+study_region_2 <- st_read("C:/Users/bgers/Desktop/MSU/Zarnetske_Lab/Data/Chapter_2/results/biogeographic_regions/Guajira1.shp")
+study_region_3 <- st_read("C:/Users/bgers/Desktop/MSU/Zarnetske_Lab/Data/Chapter_2/results/biogeographic_regions/Imeri1.shp")
+study_region_4 <- st_read("C:/Users/bgers/Desktop/MSU/Zarnetske_Lab/Data/Chapter_2/results/biogeographic_regions/Magdalena1.shp")
+study_region_5 <- st_read("C:/Users/bgers/Desktop/MSU/Zarnetske_Lab/Data/Chapter_2/results/biogeographic_regions/Paramo1.shp")
+study_region_6 <- st_read("C:/Users/bgers/Desktop/MSU/Zarnetske_Lab/Data/Chapter_2/results/biogeographic_regions/Sabana1.shp")
 
 legend_data <- data.frame(
   Study_Region = c("Chocó-Darién", "Caribbean*", "Amazonian*", "Magdalena", "Andean*", "Sabana"),
