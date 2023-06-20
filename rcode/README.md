@@ -35,6 +35,7 @@ The L1 subfolder contains scripts for Level-1 analysis, mainly calculating datab
 - L1_3_sdm_comparison: standardizes extents of all maps (expert, no-geodiversity models, geodiversity models), generates binary and continuous versions, and removes areas beyond dispersal barriers using species specific clipping regions.
 - L1_4_gain_loss_calculations: calculates gain and loss in model predictions when comparing expert, no-geodiversity models, geodiversity models, and also determines omission rate of each. Basis for Table S1.
 - L1_5_species_trait_groups: groups species based on traits (mass and diet) and generates box plots of performance for each spatial grain tested. Basis for Figure 4.
+- L1_6_percent_increase_performance: calculates percent increase in model performance between non-geodiversity and geodiversity models and assesses significance between average performance at each spatial grain
 
 
 ## L2
