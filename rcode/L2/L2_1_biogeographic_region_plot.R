@@ -1,5 +1,27 @@
-#Biogeographic region map
+
+#Title: Map of biogeographic regions
+
+#Project: Assessing the impact of scale-dependent geodiversity on species distribution models in a biodiversity hotspot
+
+#Description: This code takes pre-made shapefiles of biogeographic region based on González-Orozco (2021) paper and turns them into a map.
+
+#Data input: Premade regions from QGIS.
+
+#Data output: Map of biogeographic regions in Colombia.
+
+#Author: Beth E. Gerstner
+
+#Collaborators: Mary E. Blair, Cristian A. Cruz-Rodriguez, Phoebe L. Zarnetske, Patrick Bills
+
 library(ggnewscale)
+library(raster)
+library(dplyr)
+library(raster)
+library(maps)
+library(ggplot2)
+library(tmap)
+library(rnaturalearth)
+
 # Pull in world map
 worldMap <- ne_countries(scale = "medium", type = "countries", returnclass = "sf")
 
@@ -37,7 +59,6 @@ biogeographic_regions <-ggplot() + new_scale_fill() +
   theme_bw() + scalebar(x.min = -79, x.max = -76.5, y.min =-4.7, y.max = -3,dist = 150, st.dist=.2, st.size=3, height=.1, transform = TRUE, dist_unit = "km", model = 'WGS84') + north(study_region, location="bottomleft", scale=.1, symbol=1) + xlab("Longitude") + ylab("Latitude") + theme(text = element_text(size = 12))
 
 #Create inset
-
 #Load in Latin American study region
 SA_study_region <- worldMap %>% filter(region_wb == "Latin America & Caribbean")
 
@@ -52,7 +73,6 @@ cropped_polygon <- st_crop(SA_study_region, bbox)
 
 
 #Change to spatial dataframe
-
 SA_study_region_df <- fortify(cropped_polygon)
 
 #check the way the inset looks
@@ -73,6 +93,7 @@ inset_map_box <-
     alpha=.8
   )
 
+#Plot biogeographic regions
 biogeo_occs_inset <-ggdraw(biogeographic_regions) +
   draw_plot(
     {
