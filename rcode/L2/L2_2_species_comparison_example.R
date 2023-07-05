@@ -94,12 +94,13 @@ test_3 <- ggplot() + theme_bw() + geom_sf(data = study_region_crop, fill = "whit
 #Add scale
 final_lagotricha_expert <-test_3 + theme(legend.position="none", panel.background = element_rect(fill = "aliceblue"))+ scalebar(x.min = -73, x.max = -68.8, y.min =-4.6, y.max = -3.8,dist = 150, st.dist=.3, st.size=2.1, height=.4, transform = TRUE, dist_unit = "km", model = 'WGS84') + north(study_region_crop, location="bottomright", scale=.1, symbol=1) + ylab("Latitude") + xlab("Longitude") + geom_point(data = full_lagotricha_occ, aes(x = longitude, y = latitude), color="red",size=1, alpha=.5)
 
-
+# Subset world map. In this case we are removing the Galapagos by defining the bounding box around the Ecuador polygon.
+study_region <- worldMap %>% filter(continent=="South America" | name=="Panama" )
 #Change to spatial dataframe
 SA_study_region_df <- fortify(study_region)
 
 #check the way the inset looks
-test_inset <- ggplot() + geom_sf(data = SA_study_region_df) + theme_bw()
+test_inset <- ggplot() + geom_sf(data = SA_study_region_df) + theme_bw() + xlim(-90, -35 )
 
 
 # Get zoom box and outline study region used for GBIF example
