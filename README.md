@@ -15,7 +15,8 @@ NASA FINESST Grant #80NSSC19K1332
 - Phoebe L. Zarnetske: PI, [MSU Spatial & Community Ecology Lab (SpaCE Lab)](http://www.communityecologylab.com)
 
 ## Publications
-TBD
+
+[Gerstner BE, Blair ME, Bills P, Cruz-Rodriguez CA, Zarnetske PL. 2024 The influence of scale-dependent geodiversity on species distribution models in a biodiversity hotspot. Phil.Trans.R.Soc.A382: 20230057.https://doi.org/10.1098/rsta.2023.0057](https://royalsocietypublishing.org/doi/epdf/10.1098/rsta.2023.0057)
 
 
 ## Code & Workflow
